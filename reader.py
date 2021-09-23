@@ -3,7 +3,7 @@
 
 from typing import NamedTuple
 from dataclasses import dataclass,field
-
+opcodeList = [0,1,2,3,4,5,6,7]
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
 class stateStruct:
@@ -30,5 +30,61 @@ for line in f:
     
 
 
+
+
+
+
+
+
+
+
+def add(regA,regB,rD):
+    return 0
+def nand(regA,regB,rD):
+    return 0
+def lw(regA,regB,rD):
+    return 0
+def sw(regA,regB,rD):
+    return 0
+def beq(regA,regB,rD):
+    return 0
+def jalr(regA,regB):
+    return 0
+def halt():
+    return 0
+def noop():
+    return 0
+#maybe starting translate to 2 bit
+#compute
+def Alu(opcode,regA,regB,rD):
+
+    if(opcode == 0):
+        rD = add(regA,regB,rD)
+    elif(opcode == 1):
+        rD = nand(regA,regB,rD)
+    elif(opcode == 2):
+        regB = lw(regA,regB,rD)
+    elif(opcode == 3):
+        regB = sw(regA,regB,rD)
+    elif(opcode == 4):
+        rD = beq(regA,regB,rD)
+    elif(opcode == 5):
+        regB = jalr(regA,regB)
+    elif(opcode == 6):
+        rD = halt(regA,regB,rD)
+    else:
+        print("test")
+
+
+
+
+
+
+
+
+
+
+
+#when we write c
 
 f.close()
