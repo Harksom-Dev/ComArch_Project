@@ -28,18 +28,21 @@ for line in f:
     state.numMemory += 1
     print("memory[",state.numMemory,"] =",state.mem[state.numMemory-1])
     
-
-
-
-
-
-
-
-
-
-
+# add regA and regB and put vaule to rD
 def add(regA,regB,rD):
-    return 0
+    ans = regA + regB
+    ansDict = {
+        rD : ans
+    }
+    return ansDict #return rD(destination of reg) and ans(sum of a and b)
+
+def AND(a,b):
+    return a & b
+
+def NOT(a):
+    return ~a+2
+
+print (NOT(2))
 def nand(regA,regB,rD):
     return 0
 def lw(regA,regB,rD):
@@ -55,11 +58,12 @@ def halt():
 def noop():
     return 0
 #maybe starting translate to 2 bit
-#compute
+#compute  it's may return only regs location and vaule ?
 def Alu(opcode,regA,regB,rD):
-
+    newReg = {}
     if(opcode == 0):
-        rD = add(regA,regB,rD)
+        newReg = add(regA,regB,rD)
+        return newReg
     elif(opcode == 1):
         rD = nand(regA,regB,rD)
     elif(opcode == 2):
@@ -77,7 +81,7 @@ def Alu(opcode,regA,regB,rD):
 
 
 
-
+print(Alu(0,1,2,5))
 
 
 
