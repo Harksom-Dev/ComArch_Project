@@ -32,36 +32,41 @@ for line in f:
     state.numMemory += 1
     
 print(state)
+
+
 # add regA and regB and put vaule to rD
 def add(rs,rt,rD):
     ans = rs + rt
-    ansDict = {
-        rD : ans
-    }
-    return ansDict #return rD(destination of reg) and ans(sum of a and b)
+    state.reg[rD] = ans
+    return -1
 
+
+####### not sure #############
 def AND(a,b):
     return a & b
 
 def NOT(a):
     return ~a
-####### not sure #############
-def nand(rs,rt,rD):
 
+def nand(rs,rt,rD):
     ans = NOT(AND(rs,rt))
-    ansDict ={
-        rD : ans
-    }
-    return ansDict
+    state.reg[rD] = ans
+    return -1
 ###### notsure ################
 
 
+
 def lw(regA,regB,rD): # get vaule from mem
-    sum = regA + rd
-    ans = state.mem[sum]
-    return 0
+    sum = regA + rD #get vaule of regA + offes(rD) to locate mem 
+    ans = state.mem[sum] # locate vaule of mem to variable
+    state.reg[regB] = ans # store the target reg with mem
+    return -1
+
+
+
 def sw(regA,regB,rD):
     #rd might not be a correct dest(stack might increase)
+    
     return 0
 def beq(regA,regB,rD):
     return 0
@@ -75,9 +80,9 @@ def noop():
 
 
 #maybe starting translate to 2 bit
-#compute  it's may return only regs location and vaule ?
-def Alu(opcode,regA,regB,rD):
-    newReg = {}
+#compute  it's may return only where to jump the rest will do in sub function
+# return -1 mean not jump
+def compute(opcode,regA,regB,rD):
     if(opcode == 0):    #ADD
         rs = state.reg[regA]
         rt = state.reg[regB]
@@ -90,9 +95,8 @@ def Alu(opcode,regA,regB,rD):
         return newReg
     elif(opcode == 2):  #LW
         rA = state.reg[regA]
-        rB = state.reg[regB]
-        regB = lw(rA,rB,rD)
-
+        newReg = lw(rA,regB,rD)
+        return newReg
     elif(opcode == 3):  #SW
         regB = sw(regA,regB,rD)
     elif(opcode == 4):  #BEQ
@@ -104,12 +108,16 @@ def Alu(opcode,regA,regB,rD):
     else:   #NOOP
         print("test")
 
-opt = 1
-ra = 1
-rb = 2
-rd = 5
-print("opt=",opt,"regA=",ra,"regB=",rb,"rD=",rd)
-print(Alu(opt,ra,rb,rd))
+opt = 0
+Ra = 0
+Rb = 1
+Rd = 7
+print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
+compute(opt,Ra,Rb,Rd)
+#print(state.reg[Rb])
+i = 0
+for i in range(0,7):
+    print(state.reg[i])
 
 #############################################################################################################################
 # for i in range(state.pc,state.numMemory):
