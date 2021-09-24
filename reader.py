@@ -28,10 +28,10 @@ state = stateStruct(0,DEFMEMORY,DEFREGS)
 for line in f:
     #print(line)
     state.mem.append(line)
-    print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
+    #print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
     
-print(state)
+#print(state)
 
 
 # add regA and regB and put vaule to rD
@@ -56,18 +56,30 @@ def nand(rs,rt,rD):
 
 
 
-def lw(regA,regB,rD): # get vaule from mem
-    sum = regA + rD #get vaule of regA + offes(rD) to locate mem 
+def lw(rs,regB,rD): # get vaule from mem
+    sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
     ans = state.mem[sum] # locate vaule of mem to variable
     state.reg[regB] = ans # store the target reg with mem
+    #need to do something if we lw from stack
     return -1
 
 
+stack =[]
 
-def sw(regA,regB,rD):
+def sw(rs,rt,rD):
     #rd might not be a correct dest(stack might increase)
-    
-    return 0
+    #now we assume that reg7 is always a pointer
+    #not check continue of list conditon yet
+    pos = rs + rD
+    curpos = len(state.mem) -1
+    if(pos <= curpos): #check condition for prevent ouf of bound for memlist
+        state.mem[pos] = rt
+    elif((pos - curpos) == 1):
+        state.mem.append(rt)
+    else:
+        print("Error")
+    #are we need to delete a vaule in stack ?
+    return -1
 def beq(regA,regB,rD):
     return 0
 def jalr(regA,regB):
@@ -94,11 +106,12 @@ def compute(opcode,regA,regB,rD):
         newReg = nand(rs,rt,rD)
         return newReg
     elif(opcode == 2):  #LW
-        rA = state.reg[regA]
-        newReg = lw(rA,regB,rD)
-        return newReg
+        rs = state.reg[regA]
+        return lw(rs,regB,rD)
     elif(opcode == 3):  #SW
-        regB = sw(regA,regB,rD)
+        rs = state.reg[regA]
+        rt = state.reg[regB]
+        return sw(rs,rt,rD)
     elif(opcode == 4):  #BEQ
         rD = beq(regA,regB,rD)
     elif(opcode == 5):  #JALR
@@ -108,17 +121,20 @@ def compute(opcode,regA,regB,rD):
     else:   #NOOP
         print("test")
 
-opt = 0
+opt = 2
 Ra = 0
 Rb = 1
 Rd = 7
 print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
 compute(opt,Ra,Rb,Rd)
+compute(3,0,1,10)
 #print(state.reg[Rb])
 i = 0
 for i in range(0,7):
     print(state.reg[i])
 
+for i in range(0,len(state.mem)):
+    print(state.mem[i])
 #############################################################################################################################
 # for i in range(state.pc,state.numMemory):
 #     print(i)
