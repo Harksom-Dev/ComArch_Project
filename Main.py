@@ -44,10 +44,10 @@ def add(rs,rt,rD):
 ####### not sure #############
 def nand(rs,rt,rD):
     # nand on bit only cant do on 10-base 
-    rs = format(rs,'03b')
-    rt = format(rt,'03b')
-    print("rs= ",rs)   
-    print("rt=",rt)
+    rs = format(rs,'03b')   #convert back from base 10 to base 2
+    rt = format(rt,'03b')   #convert back from base 10 to base 2
+    # print("rs= ",rs)   
+    # print("rt=",rt)
     # rsl = []
     # rtl = []
     a = 0
@@ -71,7 +71,6 @@ def nand(rs,rt,rD):
     return -1
 ###### notsure ################
 
-nand(0,0,0)
 
 def lw(rs,regB,rD): # get vaule from mem
     sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
@@ -98,16 +97,19 @@ def sw(rs,rt,rD):
     return -1
 
 
-def beq(regA,regB,rD):
-    return 0
+def beq(rs,rt,rD):
+    if(rs == rt): # check the conditon of beq
+        return  rD   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
+    else:
+        return -1 #return -1 for inform that we not change pc
 
-
-def jalr(regA,regB):
-    return 0
+def jalr(rs,rd):
+    state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
+    return state.reg[rs] # return jump address which is regA
 def halt():
-    return 0
+    return -2
 def noop():
-    return 0
+    return -3
 
 
 
@@ -115,6 +117,7 @@ def noop():
 #compute  it's may return only where to jump the rest will do in sub function
 # return -1 mean not jump
 # return -2 for halt ?
+# return -3 for noop ?
 def compute(opcode,regA,regB,rD):
     if(opcode == 0):    #ADD
         rs = state.reg[regA] #accest regA in rs loc
@@ -129,19 +132,24 @@ def compute(opcode,regA,regB,rD):
     elif(opcode == 2):  #LW
         rs = state.reg[regA] #accest regA in rs loc
         lw(rs,regB,rD)
+        return -1
     elif(opcode == 3):  #SW
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        sw(rs,rt,rD) #-1 
+        sw(rs,rt,rD)  
         return -1
     elif(opcode == 4):  #BEQ
-        rD = beq(regA,regB,rD)
+        rs = state.reg[regA] #accest regA in rs loc
+        rt = state.reg[regB] #accest regB in rt loc
+        rD = beq(rs,rt,rD)
     elif(opcode == 5):  #JALR
-        regB = jalr(regA,regB)
+        rs = state.reg[regA] #accest regA in rs loc
+        rd = state.reg[regB] #accest regB in rt loc
+        return jalr(rs,rd)
     elif(opcode == 6):  #HALT
-        rD = halt(regA,regB,rD)
+        return halt()
     else:   #NOOP
-        print("test")
+        return noop()
 
 opt = 1
 Ra = 4
