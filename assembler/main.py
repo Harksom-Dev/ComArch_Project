@@ -67,7 +67,14 @@ class AssemblyTranslator:
     def __regDecoder(self,number):                  #TODO: decode reg from dec to bin like from '5' to '101'
         number = int(number)     
         if( number >= 0 and number < 8 ): 
-            return bin(number).replace("0b", "")    #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
+            if(number==0):
+                return "000"
+        elif(number==1):
+              return "00"+bin(number).replace("0b", "")
+        elif(number<4):
+            return"0"+bin(number).replace("0b", "")
+        elif(number>3):
+             return bin(number).replace("0b", "")   #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
         # elif number < 0 and number > -7:
         #    return bin(number if number>0 else number+(1<<3)).replace("0b", "")
         else: 
@@ -127,4 +134,3 @@ if __name__ == "__main__":
     
     
     #then read instList and decode them as binary string
-0000000000001000000000000001
