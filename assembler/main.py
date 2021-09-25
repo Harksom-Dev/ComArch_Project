@@ -10,6 +10,10 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
+    def __printer(self):                    #TODO:
+        open("textToSimulator", "w")
+        return
+
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
         return                              #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
 
