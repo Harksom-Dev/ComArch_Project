@@ -44,20 +44,35 @@ class AssemblyTranslator:
         optc_bin = self.__inst["optc_bin"][indexOfInst]
 
         if type == "R" :
-            textTranslated += "00000000" 
-            textTranslated += optc_bin 
-            textTranslated += self.__regDecoder(regA) + self.__regDecoder(regB)
+            textTranslated += "0000000"
+            textTranslated += optc_bin
+            textTranslated += self.__regDecoder(regA)
+            textTranslated += self.__regDecoder(regB)
             textTranslated += "0000000000000"
             textTranslated += self.__regDecoder(destReg)
-             # destReg_symbolic = ""
-            # isSymbolic = False
-            # for i in range(len(self.__fillValue)):
-            #     if(self.__fillValue[i][0] == destReg):
-            #         destReg_symbolic = self.__fillValue[i][1]
-            #         isSymbolic = True
-            #         break;
-            #     isSymbolic = False
-        
+
+        elif type == "I" :
+            textTranslated += "0000000"
+            textTranslated += optc_bin
+            textTranslated += self.__regDecoder(regA)
+            textTranslated += self.__regDecoder(regB)
+            textTranslated += "2’s complement(num)"
+
+        elif type == "J" :
+            textTranslated += "0000000"
+            textTranslated += optc_bin
+            textTranslated += self.__regDecoder(regA)
+            textTranslated += self.__regDecoder(regB)
+            textTranslated += "0000000000000"
+            textTranslated += self.__regDecoder(destReg)
+
+        elif type == "O" :
+            textTranslated += "0000000"
+            textTranslated += optc_bin
+            textTranslated += self.__regDecoder(regA)
+            textTranslated += self.__regDecoder(regB)
+            textTranslated += "0000000000000"
+            textTranslated += self.__regDecoder(destReg)
 
 
         print(textTranslated)        #!for debugging purposes
@@ -69,12 +84,12 @@ class AssemblyTranslator:
         if( number >= 0 and number < 8 ): 
             if(number==0):
                 return "000"
-        elif(number==1):
-              return "00"+bin(number).replace("0b", "")
-        elif(number<4):
-            return"0"+bin(number).replace("0b", "")
-        elif(number>3):
-             return bin(number).replace("0b", "")   #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
+            elif(number==1):
+                return "00"+bin(number).replace("0b", "")
+            elif(number<4):
+                return"0"+bin(number).replace("0b", "")
+            elif(number>3):
+                return bin(number).replace("0b", "")   #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
         # elif number < 0 and number > -7:
         #    return bin(number if number>0 else number+(1<<3)).replace("0b", "")
         else: 
@@ -119,7 +134,7 @@ class AssemblyTranslator:
         
         self.__fillFinding()
         print(self.__fillValue)
-        self.translator([None, 'add', '0', '2', '1'])
+        self.translator([None, 'add', '7', '5', '7'])
 
         return instList
 
