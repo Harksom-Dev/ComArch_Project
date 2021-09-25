@@ -1,5 +1,4 @@
-# testing read and write from file 
-#testing struct
+
 from Convert import ConB 
 from dataclasses import dataclass,field
 DEFMEMORY = []
