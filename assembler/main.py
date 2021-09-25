@@ -32,11 +32,6 @@ class AssemblyTranslator:
 
     
     #*used functions
-    def __isSymbolic(self,dest):            #TODO: make this function that
-        if dest in self.__fillValue:
-            return True
-        else:
-            return False
 
     def translator(self,item):              #TODO: make this function that
 
@@ -49,10 +44,20 @@ class AssemblyTranslator:
         optc_bin = self.__inst["optc_bin"][indexOfInst]
 
         if type == "R" :
+            textTranslated += "00000000" 
             textTranslated += optc_bin 
             textTranslated += self.__regDecoder(regA) + self.__regDecoder(regB)
             textTranslated += "0000000000000"
-            textTranslated += self.__isSymbolic(destReg) and self.__fillValue[self.__fillValue.index(destReg)][0] or self.__regDecoder(destReg)
+            textTranslated += self.__regDecoder(destReg)
+             # destReg_symbolic = ""
+            # isSymbolic = False
+            # for i in range(len(self.__fillValue)):
+            #     if(self.__fillValue[i][0] == destReg):
+            #         destReg_symbolic = self.__fillValue[i][1]
+            #         isSymbolic = True
+            #         break;
+            #     isSymbolic = False
+        
 
 
         print(textTranslated)        #!for debugging purposes
@@ -61,8 +66,10 @@ class AssemblyTranslator:
 
     def __regDecoder(self,number):                  #TODO: decode reg from dec to bin like from '5' to '101'
         number = int(number)     
-        if( number > -8 and number < 8 ): 
+        if( number >= 0 and number < 8 ): 
             return bin(number).replace("0b", "")    #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
+        # elif number < 0 and number > -7:
+        #    return bin(number if number>0 else number+(1<<3)).replace("0b", "")
         else: 
             return print("Invalid")   
 
@@ -105,7 +112,8 @@ class AssemblyTranslator:
         
         self.__fillFinding()
         print(self.__fillValue)
-        
+        self.translator([None, 'add', '0', '2', '1'])
+
         return instList
 
         
@@ -117,5 +125,6 @@ if __name__ == "__main__":
     asbt.stringReader()
 
     
-    # asbt.translator(['wqe', 'nand', '1', '1', '1'])
+    
     #then read instList and decode them as binary string
+0000000000001000000000000001
