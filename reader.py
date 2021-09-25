@@ -64,7 +64,6 @@ def lw(rs,regB,rD): # get vaule from mem
     return -1
 
 
-stack =[]
 
 def sw(rs,rt,rD):
     #rd might not be a correct dest(stack might increase)
@@ -80,8 +79,12 @@ def sw(rs,rt,rD):
         print("Error")
     #are we need to delete a vaule in stack ?
     return -1
+
+
 def beq(regA,regB,rD):
     return 0
+
+
 def jalr(regA,regB):
     return 0
 def halt():
