@@ -1,12 +1,10 @@
 # testing read and write from file 
 #testing struct
 from Convert import ConB 
-from os import stat
-from typing import NamedTuple
 from dataclasses import dataclass,field
-opcodeList = [0,1,2,3,4,5,6,7]
 DEFMEMORY = []
 DEFREGS = [0] * 8
+TARGETFILE = "test.txt"
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
 class stateStruct:
@@ -16,11 +14,11 @@ class stateStruct:
     numMemory: int = field(default=0)
 
 
-#struct testing
-f = open("test.txt","r")
-#initialize struct
+#start reading a target file
+f = open(TARGETFILE,"r")
+#initialize state
 state = stateStruct(0,DEFMEMORY,DEFREGS)
-#print(state)
+
 
 
 #read in the entire machine-code file into memory#
@@ -28,10 +26,9 @@ state = stateStruct(0,DEFMEMORY,DEFREGS)
 for line in f:
     #print(line)
     state.mem.append(line)
-    #print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
+    print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
     
-#print(state)
 
 
 # add regA and regB and put vaule to rD
@@ -41,7 +38,7 @@ def add(rs,rt,rD):
     return -1
 
 
-####### not sure #############
+# need to get approved
 def nand(rs,rt,rD):
     # nand on bit only cant do on 10-base 
     rs = format(rs,'03b')   #convert back from base 10 to base 2
@@ -69,7 +66,7 @@ def nand(rs,rt,rD):
 
     state.reg[rD] = a
     return -1
-###### notsure ################
+
 
 
 def lw(rs,regB,rD): # get vaule from mem
@@ -83,16 +80,15 @@ def lw(rs,regB,rD): # get vaule from mem
 
 def sw(rs,rt,rD):
     #rd might not be a correct dest(stack might increase)
-    #now we assume that reg7 is always a pointer
     #not check continue of list conditon yet
-    pos = rs + rD
-    curpos = len(state.mem) -1
+    pos = rs + rD   # get position (regB + offsetField)
+    curpos = len(state.mem) -1  #check last of memmory location
     if(pos <= curpos): #check condition for prevent ouf of bound for memlist
         state.mem[pos] = rt
-    elif((pos - curpos) == 1):
-        state.mem.append(rt)
+    elif((pos - curpos) == 1): #add vaule in the new mem location
+        state.mem.append(rt)    
     else:
-        print("Error")
+        print("Error")  #incase it store in the mem that we dont have stack pointer?
     #are we need to delete a vaule in stack ?
     return -1
 
@@ -122,26 +118,23 @@ def compute(opcode,regA,regB,rD):
     if(opcode == 0):    #ADD
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        add(rs,rt,rD)
-        return -1
+        return add(rs,rt,rD)
     elif(opcode == 1):  #NAND
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        nand(rs,rt,rD)
-        return -1
+        return nand(rs,rt,rD)
     elif(opcode == 2):  #LW
         rs = state.reg[regA] #accest regA in rs loc
-        lw(rs,regB,rD)
-        return -1
+        return lw(rs,regB,rD)
     elif(opcode == 3):  #SW
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        sw(rs,rt,rD)  
-        return -1
+        return sw(rs,rt,rD) 
     elif(opcode == 4):  #BEQ
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        rD = beq(rs,rt,rD)
+        beq(rs,rt,rD)
+        return beq(rs,rt,rD)
     elif(opcode == 5):  #JALR
         rs = state.reg[regA] #accest regA in rs loc
         rd = state.reg[regB] #accest regB in rt loc
@@ -151,10 +144,10 @@ def compute(opcode,regA,regB,rD):
     else:   #NOOP
         return noop()
 
-opt = 1
-Ra = 4
-Rb = 3
-Rd = 3
+# opt = 1
+# Ra = 4
+# Rb = 3
+# Rd = 3
 # print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
 # compute(opt,Ra,Rb,Rd)
 #compute(3,0,1,10)
