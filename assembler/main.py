@@ -2,6 +2,10 @@ from instructions import inst as Instruction
 
 
 class AssemblyTranslator:
+
+    machineLang = []
+    fillValue = []
+
     #*dummy functions 
     def __symbolCheck(self):                #!: check destReg if it haveing symbolic variables
         return
@@ -10,15 +14,20 @@ class AssemblyTranslator:
         return
         
 
-    def __regDecoder(self):                 #TODO: decode reg from dec to bin like from '5' to '101'     
-        if( self > -8 and self < 8 ): 
-            return bin(self).replace("0b", "")    #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
-        else: 
-            return print("Invalid")    
-    
-
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
         return                              #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
+
+    def __binToDec(self):                   #TODO: convert intput num in binary to decimal number
+        return
+
+    #*used functions
+
+    def __regDecoder(self,number):                 #TODO: decode reg from dec to bin like from '5' to '101'     
+        if( number > -8 and number < 8 ): 
+            return bin(number).replace("0b", "")    #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
+        else: 
+            return print("Invalid")   
+
 
     def __simplify(self,listTransformed):   #TODO: this function should delete all comments and formating
 
@@ -34,7 +43,7 @@ class AssemblyTranslator:
             resList.append(sheet)
         return resList
 
-    #*used functions
+
     def stringReader(self,filelocation = "assembler\demofile.txt"):
 
         f = open(filelocation, "r")
