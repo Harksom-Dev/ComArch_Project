@@ -11,7 +11,11 @@ class AssemblyTranslator:
         
 
     def __regDecoder(self):                 #TODO: decode reg from dec to bin like from '5' to '101'     
-        return
+        if( self > -8 and self < 8 ): 
+            return bin(self).replace("0b", "")    #? https://www.geeksforgeeks.org/python-program-to-covert-decimal-to-binary-number/
+        else: 
+            return print("Invalid")    
+    
 
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
         return                              #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
