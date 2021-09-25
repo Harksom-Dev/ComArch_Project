@@ -15,6 +15,10 @@ class AssemblyTranslator:
         return
 
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
+        for i in self.__assembly:
+            if(i[1]==".fill"):
+              sheet =[i[0],i[2]]              
+              self.__fillValue.append(sheet)
         return                              #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
 
     def __binToDec(self,binary):            #TODO: convert intput num in binary to decimal number
@@ -86,7 +90,7 @@ class AssemblyTranslator:
         return resList
 
 
-    def stringReader(self,filelocation = "assembler\demofile.txt"):
+    def stringReader(self,filelocation = "assembler\demofile copy.txt"):
 
         f = open(filelocation, "r")
         f = f.read()
@@ -96,13 +100,22 @@ class AssemblyTranslator:
         print(splited)                                  #!for debugging purposes
 
         instList = self.__simplify(splited)               #contains all assembly code in instruction list format like [labels, instcode, regA, regB, destReg]
-        self.__assembly.append(instList)
+        self.__assembly= instList
         print(*instList,sep='\n')                                 #!for debugging purposes
+        
+        self.__fillFinding()
+        print(self.__fillValue)
+        
         return instList
+
+        
+        
 
 
 if __name__ == "__main__":
     asbt = AssemblyTranslator()
     asbt.stringReader()
+
+    
     # asbt.translator(['wqe', 'nand', '1', '1', '1'])
     #then read instList and decode them as binary string
