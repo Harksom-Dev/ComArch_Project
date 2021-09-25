@@ -28,7 +28,7 @@ state = stateStruct(0,DEFMEMORY,DEFREGS)
 for line in f:
     #print(line)
     state.mem.append(line)
-    print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
+    #print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
     
 #print(state)
@@ -43,13 +43,35 @@ def add(rs,rt,rD):
 
 ####### not sure #############
 def nand(rs,rt,rD):
-    # nand on bit only cant do on 10 base 
-    ans = 0
-    state.reg[rD] = ans
+    # nand on bit only cant do on 10-base 
+    rs = format(rs,'03b')
+    rt = format(rt,'03b')
+    print("rs= ",rs)   
+    print("rt=",rt)
+    # rsl = []
+    # rtl = []
+    a = 0
+    ans = ""
+    for i in range(0,3): # loop throught the end of vaule in rs and rt and do a NAND operation
+        # rsl.append(rs[i])
+        # rtl.append(rt[i])
+        if(rs[i] == '1' and  rt[i] == '1'):
+            ans += '0'
+        else:
+            ans += '1'
+            a += 2**(2-i) # compute and answer to be base 10 vaule
+    
+    # print("string =",ans)
+    # print(a)
+    # ans = int(ans)
+    # print("int =",ans)
+    # ans --> base 10 converter then return
+
+    state.reg[rD] = a
     return -1
 ###### notsure ################
 
-
+nand(0,0,0)
 
 def lw(rs,regB,rD): # get vaule from mem
     sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
@@ -92,24 +114,26 @@ def noop():
 #maybe starting translate to 2 bit
 #compute  it's may return only where to jump the rest will do in sub function
 # return -1 mean not jump
+# return -2 for halt ?
 def compute(opcode,regA,regB,rD):
     if(opcode == 0):    #ADD
-        rs = state.reg[regA]
-        rt = state.reg[regB]
-        newReg = add(rs,rt,rD)
-        return newReg 
+        rs = state.reg[regA] #accest regA in rs loc
+        rt = state.reg[regB] #accest regB in rt loc
+        add(rs,rt,rD)
+        return -1
     elif(opcode == 1):  #NAND
-        rs = state.reg[regA]
-        rt = state.reg[regB]
-        newReg = nand(rs,rt,rD)
-        return newReg
+        rs = state.reg[regA] #accest regA in rs loc
+        rt = state.reg[regB] #accest regB in rt loc
+        nand(rs,rt,rD)
+        return -1
     elif(opcode == 2):  #LW
-        rs = state.reg[regA]
-        return lw(rs,regB,rD)
+        rs = state.reg[regA] #accest regA in rs loc
+        lw(rs,regB,rD)
     elif(opcode == 3):  #SW
-        rs = state.reg[regA]
-        rt = state.reg[regB]
-        return sw(rs,rt,rD)
+        rs = state.reg[regA] #accest regA in rs loc
+        rt = state.reg[regB] #accest regB in rt loc
+        sw(rs,rt,rD) #-1 
+        return -1
     elif(opcode == 4):  #BEQ
         rD = beq(regA,regB,rD)
     elif(opcode == 5):  #JALR
@@ -119,13 +143,13 @@ def compute(opcode,regA,regB,rD):
     else:   #NOOP
         print("test")
 
-opt = 2
-Ra = 0
-Rb = 1
-Rd = 7
-print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
-compute(opt,Ra,Rb,Rd)
-compute(3,0,1,10)
+opt = 1
+Ra = 4
+Rb = 3
+Rd = 3
+# print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
+# compute(opt,Ra,Rb,Rd)
+#compute(3,0,1,10)
 #print(state.reg[Rb])
 # i = 0
 # for i in range(0,7):

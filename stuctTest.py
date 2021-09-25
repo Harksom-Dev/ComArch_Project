@@ -1,7 +1,7 @@
 # Online Python compiler (interpreter) to run Python online.
 # Write Python 3 code in this online editor and run it.
 
-
+""" this file is use for testing only """
 from dataclasses import dataclass,field
 from typing import List
 reg = [0] * 8
@@ -33,5 +33,11 @@ def NOT(A):
 def NAND(A, B):
     return NOT(AND(A, B))
 
-print(AND(1,0))
-print(NOT(101))
+st = '011'
+a = bytearray(st,"utf8")
+print(st)
+for i in range(len(st)):
+    print(st[i])
+
+
+    
