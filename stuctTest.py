@@ -20,17 +20,18 @@ class stateStruct:
 
 p = stateStruct(0,mem,reg)
 
-print(p)  # Point(x=1.5, y=2.5, z=0.0)
+#print(p)  # Point(x=1.5, y=2.5, z=0.0)
 
 def AND(A, B):
     return A & B;   
 
 # Function to simulate NOT Gate
 def NOT(A):
-    return ~A
+    return ~A+2
 
 # Function to simulate NAND Gate
 def NAND(A, B):
     return NOT(AND(A, B))
 
-print(NAND(2415931392,2023389339))
+print(AND(1,0))
+print(NOT(101))
