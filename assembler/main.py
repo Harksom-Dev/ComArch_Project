@@ -17,8 +17,11 @@ class AssemblyTranslator:
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
         return                              #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
 
-    def __binToDec(self):                   #TODO: convert intput num in binary to decimal number
-        return
+    def __binToDec(self,binary):            #TODO: convert intput num in binary to decimal number
+        if(type(binary) is str):
+            return int(binary,2)                #TODO: intput string binary
+        else:
+            return print('Type of binary not string')
 
     #*used functions
 
