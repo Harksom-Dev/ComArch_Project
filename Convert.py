@@ -5,75 +5,71 @@ class ConB:
         self.opcode = ""
         self.regA = ""
         self.regB = ""
-        self.desReg = ""
-        self.temp = ""
-        self.offsetField = ""
-    def twosComplement(self):
-        x = self.bi
-        n = len(x)
-        i = n-1
-        while( i>= 0):
-            if(x[i] == '1'):
-                break 
-            i -=1
-        if(i== -1):
-            return '1'+x
-        k = i-1
-        while(k >= 0):
-            #flip
-            if(x[k] == 1 ):
-                x = list(x)
-                x[k] = '0'
-                x = ''.join(x)
+        self.regC = ""
+        self.twocom =""
+    
+    def twos_com(self):
+        d = int(self.regC, 2 )
+        #print("decimal is " + str(d))
+        #print("before flip is " + str(bin(d)).replace('0b', ''))
+        flipped = (d ^ 65536) + 1 
+        tcom = str(bin(flipped)).replace('0b', '')
+        signBit = tcom[0]
+        signed = "1"
+        osigned = "0"
+        while(len(tcom) < 32):  # hard-code extended
+            if(signBit == "1"):
+                tcom = signed + tcom
             else:
-                x = list(x)
-                x[k] = '1'
-                x = ''.join(x)
-            k-=1
-        return x 
+                tcom = osigned + tcom
+        self.twocom = tcom 
+        self.regC =  str(int(tcom, 2))
+        #flipped = bin(~d)
+        #print("Sign_BIT is " + signBit)
+
        
     def findReg(self):
         x = self.bi
         if(x[0:3] == "000" or x[0:3] == "001"):  # R-type (and, nand)
-            self.opcode = x[0:3]
-            self.regA = x[3:6]
-            self.regB = x[6:9]
-            self.temp = x[9:22]
-            self.desReg = x[22:25]
-            self.offsetField = "offsetFeild is invalid"
+            self.opcode = str(int(x[0:3],2))
+            self.regA = str(int(x[3:6],2))
+            self.regB = str(int(x[6:9],2)) 
+            #self.temp = x[9:22]
+            self.regC = str(int(x[22:25],2))
         elif(x[0:3] == "101"): # J-type (jalr)
-            self.opcode = x[0:3]
-            self.regA = x[3:6]
-            self.regB = x[6:9]
-            self.temp = x[9:25]
-            self.desReg = "destReg is invalid"
-            self.offsetField = "offsetFeild is invalid"
+            self.opcode = str(int(x[0:3],2))
+            self.regA = str(int(x[3:6],2))
+            self.regB =  str(int(x[6:9],2))
+            #self.temp = x[9:25]
         elif(x[0:3] == "010" or x[0:3] == "011" or x[0:3] == "100"): # I-Type (lw, sw, beq)
-            self.opcode = x[0:3]
-            self.regA = x[3:6]
-            self.regB = x[6:9]
-            self.temp = "temp is invalid"
-            self.desReg = "destReg is invalid"
-            self.offsetField = x[9:25]
-            if(x[9] == "1" ):
-                p = ConB.twosComplement(self.offsetField)
-                self.offsetField =  p
+            self.opcode = str(int(x[0:3], 2))
+            self.regA =  str(int(x[3:6], 2))
+            self.regB =  str(int(x[6:9], 2))
+            #self.temp = "temp is invalid"
+            #self.desReg = "destReg is invalid
+            self.regC = x[9:25]
+            if( x[9] == "1" ):
+                print(" - use 2's complement - ")               
+                self.twos_com()
             else:
-                self.offsetField = x[9:25]
-
+                print(" - did not use 2's complement - ")
+                self.regC = str(int(x[9:25], 2))
+            
         else : # O-type (halt, noop)
-            self.opcode = x[0:3]
-            self.temp = x[3:25]
-            self.regA = "regA is invalid"
-            self.regB = "resB is invalid"
-            self.desReg = "destReg is invalid"
-            self.offsetField = "offsetFeild is invalid"
-            
-            
+            self.opcode =  str(int(x[0:3], 2))
+            self.temp =  str(int(x[3:25], 2))
+            #self.regA = "regA is invalid"
+            #self.regB = "resB is invalid"
+            #self.desReg = "destReg is invalid"
+            #self.offsetField = "offsetFeild is invalid"
 
-           
             
-            
+""" print("======================================================================================")
+convert4 = ConB(16842749)
+print("Code is " + convert4.bi)
+convert4.findReg()
+l = convert4.regC
+print("[offsetFeild is ] " + l) """
 
 
 
