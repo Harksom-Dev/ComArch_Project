@@ -6,6 +6,7 @@ class ConB:
         self.regA = ""
         self.regB = ""
         self.regC = ""
+        self.twocom =""
     
     def twos_com(self):
         d = int(self.regC, 2 )
@@ -21,6 +22,7 @@ class ConB:
                 tcom = signed + tcom
             else:
                 tcom = osigned + tcom
+        self.twocom = tcom 
         self.regC =  str(int(tcom, 2))
         #flipped = bin(~d)
         #print("Sign_BIT is " + signBit)
@@ -45,7 +47,7 @@ class ConB:
             self.regB =  str(int(x[6:9], 2))
             #self.temp = "temp is invalid"
             #self.desReg = "destReg is invalid
-            self.regC = str(int(x[9:25], 2))
+            self.regC = x[9:25]
             if( x[9] == "1" ):
                 print(" - use 2's complement - ")               
                 self.twos_com()
@@ -70,7 +72,8 @@ l = convert4.regC
 print("[offsetFeild is ] " + l) """
 
 
-convert1 = ConB(655361)
+convert1 = ConB(16842749)
 convert1.findReg()
 print("OPCODE IN DEC : " + convert1.opcode)
 print(convert1.regA + "  " + convert1.regB + "  " + convert1.regC)
+print("this is twocom " + convert1.twocom)
