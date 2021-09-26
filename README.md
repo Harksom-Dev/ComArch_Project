@@ -1,5 +1,4 @@
 # ComArch_Project
-<<<<<<< Updated upstream
 V0.2 :
   - now return in decimal
   - fix 2'scomplement
