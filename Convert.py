@@ -1,6 +1,5 @@
 from twoscom import twosComplement as tc
 
-
 class ConB():
     def __init__(self, decnum):
         self.decnum = decnum

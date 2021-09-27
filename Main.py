@@ -1,4 +1,3 @@
-
 from Convert import ConB 
 from dataclasses import dataclass,field
 DEFMEMORY = []
