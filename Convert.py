@@ -73,7 +73,12 @@ print("[offsetFeild is ] " + l) """
 
 
 
-
+convert4 = ConB(8454151)
+print("8454151")
+print("Code is " + convert4.bi)
+convert4.findReg()
+l = convert4.regC
+print("[offsetFeild is ] " + l)
 
 # print("======================================================================================")
 # convert2 = ConB(8454151)
