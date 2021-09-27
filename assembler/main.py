@@ -94,20 +94,13 @@ class AssemblyTranslator:
             textTranslated += optc_bin
             textTranslated += self.__regDecoder(regA)
             textTranslated += self.__regDecoder(regB)
-            textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder(destReg)
             textTranslated += "0000000000000000"                   #? Bit 15 - 0 should be zero "0"*16 
 
 
         elif type == "O" :
-            textTranslated += "0000000"
-            textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
-            textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder(destReg)
-            textTranslated += optc_bin                          #? Bit 24 - 22 opcode
-            textTranslated += "0000000000000000000000"          #? Bit 21 - 0 should be zero "0"*22
+            textTranslated += "0000000"                             #? Bit 24 - 22 opcode
+            textTranslated += optc_bin                                   
+            textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
 
 
         print(textTranslated)                                             #!for debugging purposes
