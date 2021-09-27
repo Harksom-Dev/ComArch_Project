@@ -73,6 +73,8 @@ print("16318489")
 print("Code is " + convert4.bi)
 convert4.findReg()
 l = convert4.regC
+
+
 print("opcode is",convert4.opcode)
 print("ra=",convert4.regA)
 print("rb =",convert4.regB)
