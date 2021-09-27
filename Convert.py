@@ -1,4 +1,7 @@
-class ConB:
+from twoscom import twosComplement as tc
+
+
+class ConB():
     def __init__(self, decnum):
         self.decnum = decnum
         self.bi = format(decnum, '025b')
@@ -8,26 +11,6 @@ class ConB:
         self.regC = ""
         self.twocom =""
     
-    def twos_com(self):
-        d = int(self.regC, 2 )
-        #print("decimal is " + str(d))
-        #print("before flip is " + str(bin(d)).replace('0b', ''))
-        flipped = (d ^ 65536) + 1 
-        tcom = str(bin(flipped)).replace('0b', '')
-        signBit = tcom[0]
-        signed = "1"
-        osigned = "0"
-        while(len(tcom) < 32):  # hard-code extended
-            if(signBit == "1"):
-                tcom = signed + tcom
-            else:
-                tcom = osigned + tcom
-        self.twocom = tcom 
-        self.regC =  str(int(tcom, 2))
-        #flipped = bin(~d)
-        #print("Sign_BIT is " + signBit)
-
-       
     def findReg(self):
         x = self.bi
         if(x[0:3] == "000" or x[0:3] == "001"):  # R-type (and, nand)
@@ -46,14 +29,10 @@ class ConB:
             self.regA =  str(int(x[3:6], 2))
             self.regB =  str(int(x[6:9], 2))
             #self.temp = "temp is invalid"
-            #self.desReg = "destReg is invalid
+            #self.desReg = "destReg is invalid  
             self.regC = x[9:25]
-            if( x[9] == "1" ):
-                print(" - use 2's complement - ")               
-                self.twos_com()
-            else:
-                print(" - did not use 2's complement - ")
-                self.regC = str(int(x[9:25], 2))
+            c = tc.twosCom_binDec(self.regC, 16)  
+            self.regC = str(c)     
             
         else : # O-type (halt, noop)
             self.opcode =  str(int(x[0:3], 2))
