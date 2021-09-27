@@ -36,7 +36,7 @@ class ConB():
             
         else : # O-type (halt, noop)
             self.opcode =  str(int(x[0:3], 2))
-            self.temp =  str(int(x[3:25], 2))
+            self.regA =  str(int(x[3:25], 2))
             #self.regA = "regA is invalid"
             #self.regB = "resB is invalid"
             #self.desReg = "destReg is invalid"
