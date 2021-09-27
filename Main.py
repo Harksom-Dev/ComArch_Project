@@ -70,7 +70,7 @@ def nand(rs,rt,rD):
 
 def lw(rs,regB,rD): # get vaule from mem
     sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
-    ans = state.mem[sum] # locate vaule of mem to variable
+    ans = int(state.mem[sum]) # locate vaule of mem to variable
     state.reg[regB] = ans # store the target reg with mem
     #need to do something if we lw from stack
     return -1
@@ -99,7 +99,7 @@ def beq(rs,rt,rD):
 
 def jalr(rs,rd):
     state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
-    return state.reg[rs] # return jump address which is regA
+    return int(state.reg[rs]) # return jump address which is regA
 def halt():
     return -2
 def noop():
