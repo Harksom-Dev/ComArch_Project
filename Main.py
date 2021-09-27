@@ -91,7 +91,6 @@ def sw(rs,rt,rD):
     #are we need to delete a vaule in stack ?
     return -1
 
-
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
         return  rD   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
