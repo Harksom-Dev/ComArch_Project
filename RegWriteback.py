@@ -14,11 +14,11 @@ for i in range(len(state.mem)):
     print('_________________________________________________')
 
     
-    if(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'noop'):
-        i+= 1
-    elif(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'halt'):
-        break
-    else:
+    # if(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'noop'):
+    #     i+= 1
+    # elif(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'halt'):
+    #     break
+    # else:
         
         
 
