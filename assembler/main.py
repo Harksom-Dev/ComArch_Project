@@ -10,8 +10,11 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
-    def __printer(self):                    #TODO: write machine language to text file
-        open("textToSimulator.txt", "w")
+    def __printer(self):                                #TODO: write machine language to text file
+            file = open("textToSimulator.txt", "a")     #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+            for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
+                file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
+            file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
 
     def twosCom_decBin(self, dec, bit):
         if dec >= 0 :
@@ -54,16 +57,16 @@ class AssemblyTranslator:
         if type == "R" :
             textTranslated += "0000000"
             textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
+            textTranslated += self.__regDecoder3bit(regA)
+            textTranslated += self.__regDecoder3bit(regB)
             textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder(destReg)
+            textTranslated += self.__regDecoder3bit(destReg)
 
         elif type == "I" :
             textTranslated += "0000000"
             textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
+            textTranslated += self.__regDecoder3bit(regA)
+            textTranslated += self.__regDecoder3bit(regB)
 
             sybolicAddress = ""
             isSymbolic = False 
@@ -79,28 +82,28 @@ class AssemblyTranslator:
                 textTranslated += self.twosCom_decBin(int(sybolicAddress),16)
             else :
                 if (int(destReg) < 0) :
-                    textTranslated += self.twosCom_decBin(int(destReg))    #! not done yet
+                    textTranslated += self.twosCom_decBin(int(destReg))   
                 else :
-                    textTranslated += bin(int(destReg)).replace("0b", "")
+                    textTranslated += '{0:016b}'.format(int(destReg))
 
 
         elif type == "J" :
             textTranslated += "0000000"
             textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
+            textTranslated += self.__regDecoder3bit(regA)
+            textTranslated += self.__regDecoder3bit(regB)
             textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder(destReg)
+            textTranslated += self.__regDecoder3bit(destReg)
             textTranslated += "0000000000000000"                   #? Bit 15 - 0 should be zero "0"*16 
 
 
         elif type == "O" :
             textTranslated += "0000000"
             textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
+            textTranslated += self.__regDecoder3bit(regA)
+            textTranslated += self.__regDecoder3bit(regB)
             textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder(destReg)
+            textTranslated += self.__regDecoder3bit(destReg)
             textTranslated += optc_bin                          #? Bit 24 - 22 opcode
             textTranslated += "0000000000000000000000"          #? Bit 21 - 0 should be zero "0"*22
 
@@ -110,7 +113,7 @@ class AssemblyTranslator:
         self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
         
 
-    def __regDecoder(self,number):                  #TODO: decode reg from dec to bin like from '5' to '101'
+    def __regDecoder3bit(self, number):                  #TODO: decode reg from dec to bin like from '5' to '101'
         number = int(number)     
         if( number >= 0 and number < 8 ): 
             if(number==0):
@@ -157,7 +160,7 @@ class AssemblyTranslator:
         splited = f.splitlines()                        #split each line 1 on 1 into list
 
         splited = [i.split() for i in splited]          #split each element in arr to sub list in from [['asdasd', 'add', '1', '2', '3'], ...]
-        print(splited)                                  #!for debugging purposes
+        # print(splited)                                  #!for debugging purposes
 
         instList = self.__simplify(splited)             #contains all assembly code in instruction list format like [labels, instcode, regA, regB, destReg]
         self.__assembly= instList
@@ -165,7 +168,12 @@ class AssemblyTranslator:
         
         self.__fillFinding()                            #!for debugging purposes
         print(self.__fillValue)                         #!for debugging purposes
-        self.translator([None, 'lw', '0', '2', '1'])   #!for debugging purposes
+
+        # self.translator([None, 'sw', '7', '1', 'stack'])
+        for element in instList:
+            print(element)
+            self.translator(element)                    #!for debugging purposes
+        print(*self.__machineLang,sep='\n')             #!for debugging purposes
 
 
 
