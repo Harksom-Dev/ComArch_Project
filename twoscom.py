@@ -20,5 +20,5 @@ class twosComplement:
             return -1 * (int(''.join('1' if x == '0' else '0' for x in num), 2) + 1)
 
 
-"""     print("this is (1111111111111101) dec is  " + str(twosCom_binDec('1111111111111101',15)))
+"""     print("this is (1111111111111101) dec is  " + str(twosCom_binDec('1111111111111111',16)))
     print("this is (-1) bi is " + str(twosCom_decBin(-1, 16))) """
