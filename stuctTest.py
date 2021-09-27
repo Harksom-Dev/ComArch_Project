@@ -20,7 +20,7 @@ class stateStruct:
 
 p = stateStruct(0,mem,reg)
 
-#print(p)  # Point(x=1.5, y=2.5, z=0.0)
+print(p)  # Point(x=1.5, y=2.5, z=0.0)
 
 def AND(A, B):
     return A & B;   

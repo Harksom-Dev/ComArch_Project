@@ -20,18 +20,18 @@ class stateStruct:
 f = open("test.txt","r")
 #initialize struct
 state = stateStruct(0,DEFMEMORY,DEFREGS)
-#print(state)
+# print(state)
 
 
 #read in the entire machine-code file into memory#
 #not implement exit condition yet
 for line in f:
-    #print(line)
+    # print(line)
     state.mem.append(line)
-    print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
+    # print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
     
-#print(state)
+# print(state)
 
 
 # add regA and regB and put vaule to rD
@@ -119,33 +119,38 @@ def compute(opcode,regA,regB,rD):
     else:   #NOOP
         print("test")
 
-opt = 2
-Ra = 0
-Rb = 1
-Rd = 7
-print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
-compute(opt,Ra,Rb,Rd)
-compute(3,0,1,10)
-#print(state.reg[Rb])
+# opt = 6
+# Ra = 0
+# Rb = 1
+# Rd = 7
+# print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
+# print(compute(opt,Ra,Rb,Rd))
+# print(compute(2,0,1,10))
+
 # i = 0
 # for i in range(0,7):
 #     print(state.reg[i])
 
 # for i in range(0,len(state.mem)):
 #     print(state.mem[i])
-#############################################################################################################################
+# ############################################################################################################################
 # for i in range(state.pc,state.numMemory):
 #     print(i)
 #     print(state.mem)
 #     print(state.reg)
 
 
-# a = ConB(int(state.mem[4]))
+# a = ConB(int(state.mem[0]))
+# print(a.decnum)
 # a.findReg()
-# print((a.opcode))
+# print(a.bi)
+# print(a.opcode)
 # print(a.regA)
 # print(a.regB)
+# print(a.regC)
+
+# print(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC)))   #compute(opt,Ra,Rb,Rd)
 # print(a.offsetField)
-#when we write c
+# when we write c
 
 f.close()

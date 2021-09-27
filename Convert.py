@@ -119,9 +119,8 @@ class ConB:
 # print("[Temp is   ] " + convert3.temp)
 # print("[offsetFeild is ] " + convert3.offsetField)
 
-print("======================================================================================")
-convert4 = ConB(16842749)
-convert4.findReg()
-l = convert4.regC
-print("[offsetFeild is ] " + l)
+# print("======================================================================================")
+# convert4 = ConB(16842749)
+# convert4.findReg()
+# print()
 
