@@ -10,9 +10,14 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
-    def __printer(self):                    #TODO: write machine language to text file
-        open("textToSimulator.txt", "w")
-
+    def __printer(self):                            #TODO: write machine language to text file
+        file = open("textToSimulator.txt", "a")     #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+        for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
+                                                    #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
+            file.write("/n" + str(i))               #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
+            file.close()
+                                            
+             
     def twosCom_decBin(self, dec, bit):
         if dec >= 0 :
             bin1 = bin(dec).split("0b")[1]
