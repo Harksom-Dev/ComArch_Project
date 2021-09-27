@@ -13,22 +13,15 @@ class AssemblyTranslator:
     def __printer(self):                    #TODO: write machine language to text file
         open("textToSimulator.txt", "w")
 
-    def __twos_com(self, num):
-        d = int(num, 2)
-
-        flipped = (d ^ 65536) + 1 
-        tcom = str(bin(flipped)).replace('0b', '')
-        signBit = tcom[0]
-        signed = "1"
-        osigned = "0"
-        while(len(tcom) < 32):  # hard-code extended
-            if(signBit == "1"):
-                tcom = signed + tcom
-            else:
-                tcom = osigned + tcom
-        num = tcom
-        #flipped = bin(~d)
-        #print("Sign_BIT is " + signBit)
+    def twosCom_decBin(self, dec, bit):
+        if dec >= 0 :
+            bin1 = bin(dec).split("0b")[1]
+            while len(bin1) < bit:
+                bin1 = '0'+bin1
+            return bin1
+        else:
+            bin1 = -1*dec
+            return bin(bin1 - pow(2,bit) ).split("0b")[1]
 
 
     
@@ -72,16 +65,24 @@ class AssemblyTranslator:
             textTranslated += self.__regDecoder(regA)
             textTranslated += self.__regDecoder(regB)
 
-            destReg_symbolic = ""
-            isSymbolic = False
-            for i in range(len(self.__fillValue)):
-                if(self.__fillValue[i][0] == destReg):
-                    destReg_symbolic = self.__fillValue[i][1]
+            sybolicAddress = ""
+            isSymbolic = False 
+            for i in range(len(self.__assembly)):
+                if(self.__assembly[i][0] == destReg):
+                    sybolicAddress = str(i)
                     isSymbolic = True
                     break;
                 isSymbolic = False
 
-            textTranslated += self.__twos_com(int(destReg_symbolic)) if isSymbolic else self.__twos_com(destReg)    #! not done yet
+
+            if isSymbolic :
+                textTranslated += self.twosCom_decBin(int(sybolicAddress),16)
+            else :
+                if (int(destReg) < 0) :
+                    textTranslated += self.twosCom_decBin(int(destReg))    #! not done yet
+                else :
+                    textTranslated += bin(int(destReg)).replace("0b", "")
+
 
         elif type == "J" :
             textTranslated += "0000000"
@@ -104,7 +105,9 @@ class AssemblyTranslator:
             textTranslated += "0000000000000000000000"          #? Bit 21 - 0 should be zero "0"*22
 
 
-        print(textTranslated)        #!for debugging purposes
+        print(textTranslated)                                             #!for debugging purposes
+        print(self.__binToDec(textTranslated))                            #!for debugging purposes
+        self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
         
 
     def __regDecoder(self,number):                  #TODO: decode reg from dec to bin like from '5' to '101'
@@ -162,7 +165,7 @@ class AssemblyTranslator:
         
         self.__fillFinding()                            #!for debugging purposes
         print(self.__fillValue)                         #!for debugging purposes
-        self.translator([None, 'lw', '0', '2', 'neg1'])   #!for debugging purposes
+        self.translator([None, 'lw', '0', '2', '1'])   #!for debugging purposes
 
 
 
