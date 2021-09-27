@@ -1,33 +1,32 @@
-from Convert import * 
-from reader import *
+from Convert import ConB
+from Main import *
 
-def splitdata(x):
-    a = []
-    f = open(x, "r")
-    a = f.read()
-    arr = a.split("\n")
-    return arr
+for i in range(len(state.mem)):
+    a = ConB(int(state.mem[i]))
+    a.findReg()
+    print('pc is ',format(i))
+    print(state.mem[i])
+    print('opcode is {}'.format(a.opcode))
+    print('regA is {}'.format(a.regA))
+    print('regB is {}'.format(a.regB))
+    print('regC is {}'.format(a.regC))
+    print(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC)))
+    print('_________________________________________________')
 
-print(splitdata("test.txt"))
-
-def simulateEX(x):
-    print('@@@\nstate:\n\t\tpc 0\n\t\tmemory:')
-    arr = splitdata(x)
-    numReg = 8
-    for i in range(len(arr)):
-        print('\t\t\t\tmemory[{0}]={1}'.format(i,arr[i]))
-    print('\t\tregiters:')
-    for i in range(numReg):
-        print('\t\t\t\treg[{0}]{1}'.format(i,' '))
-    print('end state')
     
+    if(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'noop'):
+        i+= 1
+    elif(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'halt'):
+        break
+    else:
+        
+        
 
-# simulateEX("test.txt")
-a = ConB(int(state.mem[0]))
-print(a.decnum)
-a.findReg()
-print(a.bi)
-print((a.opcode))
-print(a.regA)
-print(a.regB)
- 
+
+# a = ConB(int(state.mem[6]))
+# a.findReg()
+# print('opcode is {}'.format(a.opcode))
+# print('regA is {}'.format(a.regA))
+# print('regB is {}'.format(a.regB))
+# print('regC is {}'.format(a.regC))
+# print(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC)))
