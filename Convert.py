@@ -57,11 +57,14 @@ print("[offsetFeild is ] " + l) """
 
 
 
-convert4 = ConB(16842749)
-print("16842749")
+convert4 = ConB(16318489)
+print("16318489")
 print("Code is " + convert4.bi)
 convert4.findReg()
 l = convert4.regC
+print("opcode is",convert4.opcode)
+print("ra=",convert4.regA)
+print("rb =",convert4.regB)
 print("[offsetFeild is ] " + l)
 
 # print("======================================================================================")
