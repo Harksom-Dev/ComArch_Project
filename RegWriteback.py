@@ -1,42 +1,47 @@
+from os import stat
 from Convert import ConB
 from Main import *
 
 def printStruct(x):
-        a = ConB(int(state.mem[x]))
-        a.findReg()
         print('@@@\nstate:')
-        print('\tpc {}:'.format(x))
+        print('\tpc :',state.pc)
         print('\tmemory:')
         for i in range(len(DEFMEMORY)):
             print('\t\tmem[ {} ] {}'.format(i,int(DEFMEMORY[i])))
         # print(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC)))
         print('\tregisters:')
         for i in range(len(DEFREGS)):
-            print('\t\treg[ {} ] {}'.format(i,int(DEFREGS[i])))
+            print('\t\treg[ {} ] {}'.format(i,state.reg[i]))
         print('end state')
+        # print(DEFMEMORY)
 
 def SimulateEx():
     address = 0
-    for i in range(len(state.mem)):
-        a = ConB(int(state.mem[address]))
+    
+    while(state.pc != state.numMemory):
+        a = ConB(int(state.mem[state.pc]))
         a.findReg()
-        if(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'noop'):
-            print(printStruct(address))
-            address+=1
-        elif(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'halt'):
-            print(printStruct(address))
+        print(printStruct(state.pc))
+        test = compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))
+        if(test == 'noop'):
+            #print(printStruct(address))
+            state.pc+=1
+        elif(test == 'halt'):
+            #print(printStruct(address))
+            state.pc += 1
             break
-        elif(compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))== 'notjump'):
-            print(printStruct(address))
-            address+=1
+        elif(test == 'notjump'):
+            #print(printStruct(address))
+            state.pc += 1
         else:
-            print(printStruct(address))
-            JAddress =  compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))
-            address = JAddress + address
+            #print(printStruct(address))
+            state.pc +=  test +1
+            #address = state.pc
+        #print("#############################################################",state.pc)
 
         
 SimulateEx()
-
+#print(DEFREGS)
 
 
 

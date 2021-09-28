@@ -32,8 +32,10 @@ for line in f:
 
 # add regA and regB and put vaule to rD
 def add(rs,rt,rD):
-    ans = rs + rt
-    state.reg[rD] = ans
+    ans = int(rs) + int(rt)
+    state.reg[rD] = int(ans)
+    #print("rs =",rs,"rt =",rt,"rD =",rD)
+    #print(ans)
     return 'notjump'
 
 
@@ -93,7 +95,7 @@ def sw(rs,rt,rD):
 
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
-        return  rD   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
+        return  int(rD)   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
     else:
         return 'notjump' #return -1 for inform that we not change pc
 
@@ -131,7 +133,6 @@ def compute(opcode,regA,regB,rD):
     elif(opcode == 4):  #BEQ
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        beq(rs,rt,rD)
         return beq(rs,rt,rD)
     elif(opcode == 5):  #JALR
         rs = state.reg[regA] #accest regA in rs loc
