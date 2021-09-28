@@ -10,7 +10,7 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
-    def __printer(self):                                #TODO: write machine language to text file
+    def printer(self):                                #TODO: write machine language to text file
             file = open("textToSimulator.txt", "a")     #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
             for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
                 file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
@@ -49,57 +49,65 @@ class AssemblyTranslator:
         textTranslated = ""
 
         labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4] 
+        if instcode != ".fill" :
+            indexOfInst = self.__inst["name"].index(instcode)
+            type = self.__inst["type"][indexOfInst]
+            optc_bin = self.__inst["optc_bin"][indexOfInst]
 
-        indexOfInst = self.__inst["name"].index(instcode)
-        type = self.__inst["type"][indexOfInst]
-        optc_bin = self.__inst["optc_bin"][indexOfInst]
+            if type == "R" :
+                textTranslated += "0000000"
+                textTranslated += optc_bin
+                textTranslated += self.__regDecoder3bit(regA)
+                textTranslated += self.__regDecoder3bit(regB)
+                textTranslated += "0000000000000"
+                textTranslated += self.__regDecoder3bit(destReg)
 
-        if type == "R" :
-            textTranslated += "0000000"
-            textTranslated += optc_bin
-            textTranslated += self.__regDecoder3bit(regA)
-            textTranslated += self.__regDecoder3bit(regB)
-            textTranslated += "0000000000000"
-            textTranslated += self.__regDecoder3bit(destReg)
+            elif type == "I" :
+                textTranslated += "0000000"
+                textTranslated += optc_bin
+                textTranslated += self.__regDecoder3bit(regA)
+                textTranslated += self.__regDecoder3bit(regB)
 
-        elif type == "I" :
-            textTranslated += "0000000"
-            textTranslated += optc_bin
-            textTranslated += self.__regDecoder3bit(regA)
-            textTranslated += self.__regDecoder3bit(regB)
-
-            sybolicAddress = ""
-            isSymbolic = False 
-            for i in range(len(self.__assembly)):
-                if(self.__assembly[i][0] == destReg):
-                    sybolicAddress = str(i)
-                    isSymbolic = True
-                    break;
-                isSymbolic = False
+                sybolicAddress = ""
+                isSymbolic = False 
+                for i in range(len(self.__assembly)):
+                    if(self.__assembly[i][0] == destReg):
+                        sybolicAddress = str(i)
+                        isSymbolic = True
+                        break;
+                    isSymbolic = False
 
 
-            if isSymbolic :
-                textTranslated += self.twosCom_decBin(int(sybolicAddress),16)
-            else :
-                if (int(destReg) < 0) :
-                    textTranslated += self.twosCom_decBin(int(destReg))   
+                if isSymbolic :
+                    textTranslated += self.twosCom_decBin(int(sybolicAddress),16)
                 else :
-                    textTranslated += '{0:016b}'.format(int(destReg))
+                    if (int(destReg) < 0) :
+                        textTranslated += self.twosCom_decBin(int(destReg))   
+                    else :
+                        textTranslated += '{0:016b}'.format(int(destReg))
 
 
-        elif type == "J" :
-            textTranslated += "0000000"
-            textTranslated += optc_bin
-            textTranslated += self.__regDecoder(regA)
-            textTranslated += self.__regDecoder(regB)
-            textTranslated += "0000000000000000"                   #? Bit 15 - 0 should be zero "0"*16 
+            elif type == "J" :
+                textTranslated += "0000000"
+                textTranslated += optc_bin
+                textTranslated += self.__regDecoder3bit(regA)
+                textTranslated += self.__regDecoder3bit(destReg)
+                textTranslated += "0000000000000000"                   #? Bit 15 - 0 should be zero "0"*16 
 
 
-        elif type == "O" :
-            textTranslated += "0000000"                             #? Bit 24 - 22 opcode
-            textTranslated += optc_bin                                   
-            textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
-
+            elif type == "O" :
+                textTranslated += "0000000"                             #? Bit 24 - 22 opcode
+                textTranslated += optc_bin                                   
+                textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
+        else:
+            isSymbolicAddress = False 
+            for i in range(len(self.__assembly)):
+                if (regA == self.__assembly[i][0]):
+                    textTranslated = bin(int(i))
+                    isSymbolicAddress = True
+                    break;
+            if (isSymbolicAddress == False):
+                textTranslated = bin(int(regA))
 
         print(textTranslated)                                             #!for debugging purposes
         print(self.__binToDec(textTranslated))                            #!for debugging purposes
@@ -133,6 +141,10 @@ class AssemblyTranslator:
                     labels, instcode, regA, regB, destReg = None, item[0], None, None, None
                 elif item[1] == "halt":
                     labels, instcode, regA, regB, destReg = item[0], item[1], None, None, None
+                elif item[0] == "jalr":
+                    labels, instcode, regA, regB, destReg = None, item[0], item[1], None, item[2]
+                elif item[1] == "jalr":
+                    labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], None
                 else:
                     labels, instcode, regA, regB, destReg = None, item[0], item[1], item[2], item[3]        #if have the same name as the instruction in the instruction list
             elif (item[1] == ".fill") :
@@ -176,5 +188,7 @@ if __name__ == "__main__":
     asbt = AssemblyTranslator()
 
     asbt.stringReader()
+
+    asbt.printer()
 
     #then read instList and decode them as binary string
