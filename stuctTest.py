@@ -18,7 +18,7 @@ class stateStruct:
 
 
 
-p = stateStruct(0,mem,reg)
+p = stateStruct(1,mem,reg)
 
 print(p)  # Point(x=1.5, y=2.5, z=0.0)
 

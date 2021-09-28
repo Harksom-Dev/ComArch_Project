@@ -3,6 +3,7 @@ from dataclasses import dataclass,field
 DEFMEMORY = []
 DEFREGS = [0] * 8
 TARGETFILE = "test.txt"
+
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
 class stateStruct:
@@ -26,8 +27,6 @@ for line in f:
     state.mem.append(line)
     # print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
-
-    
 
 
 # add regA and regB and put vaule to rD
