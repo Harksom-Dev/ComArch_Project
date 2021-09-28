@@ -26,6 +26,7 @@ for line in f:
     state.mem.append(line)
     # print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
+
     
 
 
@@ -33,7 +34,7 @@ for line in f:
 def add(rs,rt,rD):
     ans = rs + rt
     state.reg[rD] = ans
-    return -1
+    return 'notjump'
 
 
 # need to get approved
@@ -63,17 +64,16 @@ def nand(rs,rt,rD):
     # ans --> base 10 converter then return
 
     state.reg[rD] = a
-    return -1
+    return 'notjump'
 
 
 
 def lw(rs,regB,rD): # get vaule from mem
-    sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
+    sum = int(rs + rD) #get vaule of regA + offes(rD) to locate mem 
     ans = int(state.mem[sum]) # locate vaule of mem to variable
-    sum = 0
     state.reg[regB] = ans # store the target reg with mem
     #need to do something if we lw from stack
-    return -1
+    return 'notjump'
 
 
 
@@ -89,13 +89,13 @@ def sw(rs,rt,rD):
     else:
         print("Error")  #incase it store in the mem that we dont have stack pointer?
     #are we need to delete a vaule in stack ?
-    return -1
+    return 'notjump'
 
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
         return  rD   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
     else:
-        return -1 #return -1 for inform that we not change pc
+        return 'notjump' #return -1 for inform that we not change pc
 
 def jalr(rs,rd):
     state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
@@ -148,7 +148,7 @@ def compute(opcode,regA,regB,rD):
 # Rd = 3
 # print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
 # compute(opt,Ra,Rb,Rd)
-# compute(3,0,1,10)
+#compute(3,0,1,10)
 #print(state.reg[Rb])
 # i = 0
 # for i in range(0,7):
@@ -156,13 +156,19 @@ def compute(opcode,regA,regB,rD):
 
 # for i in range(0,len(state.mem)):
 #     print(state.mem[i])
-#############################################################################################################################
+# ############################################################################################################################
 # for i in range(state.pc,state.numMemory):
 #     print(i)
 #     print(state.mem)
 #     print(state.reg)
 
+
+# a = ConB(int(state.mem[4]))
+# a.findReg()
+# print((a.opcode))
+# print(a.regA)
+# print(a.regB)
 # print(a.offsetField)
-# # when we write c
+#when we write c
 
 f.close()

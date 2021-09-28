@@ -1,4 +1,4 @@
-from twoscom import twosComplement as tc
+from twosComplement import twosComplement as tc
 
 class ConB():
     def __init__(self, decnum):
@@ -60,26 +60,12 @@ print("[offsetFeild is ] " + l) """
 
 
 
-<<<<<<< HEAD
 # convert4 = ConB(16842749)
 # print("16842749")
 # print("Code is " + convert4.bi)
 # convert4.findReg()
 # l = convert4.regC
 # print("[offsetFeild is ] " + l)
-=======
-convert4 = ConB(16318489)
-print("16318489")
-print("Code is " + convert4.bi)
-convert4.findReg()
-l = convert4.regC
-
-
-print("opcode is",convert4.opcode)
-print("ra=",convert4.regA)
-print("rb =",convert4.regB)
-print("[offsetFeild is ] " + l)
->>>>>>> d8f76efae191ee89934a108a4064185ca20ec8b4
 
 # print("======================================================================================")
 # convert2 = ConB(8454151)
