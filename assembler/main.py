@@ -10,13 +10,13 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
-    def printer(self, des = "textToSimulator.txt"):     #TODO: write machine language to text file
-            file = open(des, "a")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
-            for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
-                file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
-            file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
+    def printer(self, des = "textToSimulator.txt", inputList = __machineLang):    #TODO: write machine language to text file
+            file = open(des, "a")                                                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+            for i in inputList:                                                         #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
+                file.write(str(i)+"\n")                                                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
+            file.close()                                                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
 
-    def twosCom_decBin(self, dec, bit):
+    def __twosCom_decBin(self, dec, bit):
         if dec >= 0 :
             bin1 = bin(dec).split("0b")[1]
             while len(bin1) < bit:
@@ -63,28 +63,46 @@ class AssemblyTranslator:
                 textTranslated += self.__regDecoder3bit(destReg)
 
             elif type == "I" :
-                textTranslated += "0000000"
-                textTranslated += optc_bin
-                textTranslated += self.__regDecoder3bit(regA)
-                textTranslated += self.__regDecoder3bit(regB)
+                if (self.__inst["name"][indexOfInst] == "lw"):
+                    textTranslated += "0000000"
+                    textTranslated += optc_bin
+                    textTranslated += self.__regDecoder3bit(regA)
+                    textTranslated += self.__regDecoder3bit(regB)
 
-                sybolicAddress = ""
-                isSymbolic = False 
-                for i in range(len(self.__assembly)):
-                    if(self.__assembly[i][0] == destReg):
-                        sybolicAddress = str(i)
-                        isSymbolic = True
-                        break;
-                    isSymbolic = False
+                    sybolicAddress = ""
+                    isSymbolic = False 
+                    for i in range(len(self.__assembly)):
+                        if(self.__assembly[i][0] == destReg):
+                            sybolicAddress = str(i)
+                            isSymbolic = True
+                            break;
+                        isSymbolic = False
+                else:
+                    textTranslated += "0000000"
+                    textTranslated += optc_bin
+                    textTranslated += self.__regDecoder3bit(regA)
+                    textTranslated += self.__regDecoder3bit(regB)
+
+                    sybolicAddress = ""
+                    isSymbolic = False 
+
+                    indexOfItem = self.__assembly.index(item)
+                    for i in range(len(self.__assembly)):
+                        if(self.__assembly[i][0] == destReg):
+                            # print(indexOfItem-i-1)                      #!for debugging purposes
+                            sybolicAddress = str(indexOfItem-i-1)
+                            isSymbolic = True
+                            break;
+                        isSymbolic = False
 
 
-                if isSymbolic :
-                    textTranslated += self.twosCom_decBin(int(sybolicAddress),16)
-                else :
-                    if (int(destReg) < 0) :
-                        textTranslated += self.twosCom_decBin(int(destReg))   
+                    if (isSymbolic) :
+                        textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
                     else :
-                        textTranslated += '{0:016b}'.format(int(destReg))
+                        if (int(destReg) < 0) :
+                            textTranslated += self.__twosCom_decBin(int(destReg))   
+                        else :
+                            textTranslated += '{0:016b}'.format(int(destReg))
 
 
             elif type == "J" :
@@ -99,7 +117,7 @@ class AssemblyTranslator:
                 textTranslated += "0000000"                             #? Bit 24 - 22 opcode
                 textTranslated += optc_bin                                   
                 textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
-        else:
+        else:                                                           #for ,fill
             isSymbolicAddress = False 
             for i in range(len(self.__assembly)):
                 if (regA == self.__assembly[i][0]):
@@ -139,6 +157,10 @@ class AssemblyTranslator:
             if (item[0] in Instruction["name"]):    #ckeck instions of this line have the same name as the instruction in the instruction list
                 if (item[0]  == "halt"):            #and spacial case for "halt" it can be in both item[0] and item[1] 
                     labels, instcode, regA, regB, destReg = None, item[0], None, None, None
+                elif item[0] == "noop":
+                    labels, instcode, regA, regB, destReg = None, item[0], None, None, None
+                elif item[1] == "noop":
+                    labels, instcode, regA, regB, destReg = item[0], item[1], None, None, None
                 elif item[1] == "halt":
                     labels, instcode, regA, regB, destReg = item[0], item[1], None, None, None
                 elif item[0] == "jalr":
@@ -158,7 +180,7 @@ class AssemblyTranslator:
         return resList
 
 
-    def stringReader(self,filelocation = "assembler\demofile copy.txt"):
+    def stringReader(self,filelocation = "assembler\demofile.txt"):
 
         f = open(filelocation, "r")
         f = f.read()
@@ -178,6 +200,7 @@ class AssemblyTranslator:
         for element in instList:
             print(element)
             self.translator(element)                    #!for debugging purposes
+        print("")
         print(*self.__machineLang,sep='\n')             #!for debugging purposes
 
 
