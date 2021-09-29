@@ -49,6 +49,8 @@ class AssemblyTranslator:
     def translator(self,item):              #TODO: make this function that
 
         textTranslated = ""
+        isInFillValue = False 
+        isSymbolic = False 
 
         labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4] 
         if (instcode in Instruction["name"]) :
@@ -81,6 +83,7 @@ class AssemblyTranslator:
                             isSymbolic = True
                             break;
                         isSymbolic = False
+
                 else:
                     textTranslated += "0000000"
                     textTranslated += optc_bin
@@ -88,18 +91,19 @@ class AssemblyTranslator:
                     textTranslated += self.__regDecoder3bit(regB)
 
                     sybolicAddress = ""
-                    isSymbolic = False 
                     for i in range(len(self.__assembly)):
                         if(self.__assembly[i][0] == destReg):
                             sybolicAddress = str(i)
                             isSymbolic = True
                             break;
-
+                
 
                 if (isSymbolic) :
                     textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
-
-                # elif(destReg):
+                
+                elif(not destReg.isdigit()):
+                    self.errorDetect = True
+                    self.errorDetail = "Using undefined labels"
 
                 else :
                     if (int(destReg) < 0) :
