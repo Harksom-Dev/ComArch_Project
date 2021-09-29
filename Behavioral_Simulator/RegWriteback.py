@@ -2,23 +2,24 @@ from os import stat
 from Convert import ConB
 from Main import *
 
-def printer(self, des = "ExSimulator.txt"):     #TODO: write machine language to text file
+textList = []
+def printer(des = "ExSimulator.txt", inputList = textList):  #TODO: write machine language to text file
             file = open(des, "a")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
-            for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
+            for i in inputList:                         #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
                 file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
             file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
 
 def printStruct(x): #use for print in each step
-        print('@@@\nstate:')
-        print('\tpc :',state.pc)
-        print('\tmemory:')
-        for i in range(len(DEFMEMORY)):     #print each memory in that step
-            print('\t\tmem[ {} ] {}'.format(i,int(DEFMEMORY[i])))
-        print('\tregisters:')
-        for i in range(len(DEFREGS)):   #print each registers in that step
-            print('\t\treg[ {} ] {}'.format(i,state.reg[i]))
-        print('end state')
-        return ''
+    textList.append('@@@\nstate:')
+    textList.append('\tpc ' + str(state.pc))
+    textList.append('\tmemory:')
+    for i in range(len(DEFMEMORY)):     #print each memory in that step
+        textList.append('\t\t\tmem[ {} ] {}'.format(i,int(DEFMEMORY[i])))
+    textList.append('\tregisters:')
+    for i in range(len(DEFREGS)):   #print each registers in that step
+        textList.append('\t\t\treg[ {} ] {}'.format(i,state.reg[i]))
+    textList.append('end state\n')
+    return ''
 
 def Simulate():
     SimulateEX = []
@@ -27,7 +28,7 @@ def Simulate():
     while(state.pc != state.numMemory):
         a = ConB(int(state.mem[state.pc]))
         a.findReg()
-        SimulateEX.append(printStruct(state.pc))
+        printStruct(state.pc)
         test = compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))
         instructionCount+=1
         if(test == 'noop'): #if compute return noop
@@ -35,7 +36,7 @@ def Simulate():
             state.pc+=1
             #instructionCount+=1
         elif(test == 'halt'):   #if compute return halt
-            print('machine halted \n total of {} instructions executed\n final state of machine:'.format(instructionCount))
+            textList.append('machine halted \n total of {} instructions executed\n final state of machine:\n'.format(instructionCount))
             #print(printStruct(state.pc))
             state.pc += 1
             #instructionCount+=1
@@ -51,8 +52,10 @@ def Simulate():
     
 
     #print after instruction done
-    print(printStruct(state.pc))
+    # print (*textList, sep="\n") 
+    # print(textList) 
+    textList.append(printStruct(state.pc))
+    printer("ExSimulator.txt",textList)
     
  
 Simulate()
-
