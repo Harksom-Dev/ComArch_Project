@@ -10,7 +10,7 @@ class AssemblyTranslator:
 
     #*dummy functions 
 
-    def printer(self, des = "textToSimulator.txt", inputList = __machineLang):    #TODO: write machine language to text file
+    def printer(self, des = "textToSimulator.txt", inputList = __machineLang):          #TODO: write machine language to text file
             file = open(des, "a")                                                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
             for i in inputList:                                                         #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
                 file.write(str(i)+"\n")                                                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
@@ -89,20 +89,19 @@ class AssemblyTranslator:
                     indexOfItem = self.__assembly.index(item)
                     for i in range(len(self.__assembly)):
                         if(self.__assembly[i][0] == destReg):
-                            # print(indexOfItem-i-1)                      #!for debugging purposes
-                            sybolicAddress = str(indexOfItem-i-1)
+                            sybolicAddress = str((indexOfItem+1-i)*-1)      #this eqation for calculate how many line should add(sub) in offsetField
                             isSymbolic = True
                             break;
                         isSymbolic = False
 
 
-                    if (isSymbolic) :
-                        textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+                if (isSymbolic) :
+                    textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+                else :
+                    if (int(destReg) < 0) :
+                        textTranslated += self.__twosCom_decBin(int(destReg))   
                     else :
-                        if (int(destReg) < 0) :
-                            textTranslated += self.__twosCom_decBin(int(destReg))   
-                        else :
-                            textTranslated += '{0:016b}'.format(int(destReg))
+                        textTranslated += '{0:016b}'.format(int(destReg))
 
 
             elif type == "J" :
