@@ -1,5 +1,4 @@
-from twoscom import twosComplement as tc
-
+from twosComplement import twosComplement as tc
 
 class ConB():
     def __init__(self, decnum):
@@ -23,7 +22,7 @@ class ConB():
             self.opcode = str(int(x[0:3],2))
             self.regA = str(int(x[3:6],2))
             self.regB =  str(int(x[6:9],2))
-            self.regC = "0"
+            self.regC = 0
             #self.temp = x[9:25]
         elif(x[0:3] == "010" or x[0:3] == "011" or x[0:3] == "100"): # I-Type (lw, sw, beq)
             self.opcode = str(int(x[0:3], 2))
@@ -39,9 +38,13 @@ class ConB():
             
         else : # O-type (halt, noop)
             self.opcode =  str(int(x[0:3], 2))
-            self.regA = str(int(x[3:25], 2))
-            self.regB = "0" 
-            self.regC = "0"
+            self.temp =  str(int(x[3:25], 2))
+            # self.regA = "regA is invalid"
+            # self.regB = "resB is invalid"
+            # self.regC = ""
+            self.regA = 0
+            self.regB = 0 
+            self.regC = 0
             #self.regA = "regA is invalid"
             #self.regB = "resB is invalid"
             #self.desReg = "destReg is invalid"
@@ -57,17 +60,12 @@ print("[offsetFeild is ] " + l) """
 
 
 
-convert4 = ConB(16318489)
-print("16318489")
-print("Code is " + convert4.bi)
-convert4.findReg()
-l = convert4.regC
-
-
-print("opcode is",convert4.opcode)
-print("ra=",convert4.regA)
-print("rb =",convert4.regB)
-print("[offsetFeild is ] " + l)
+# convert4 = ConB(16842749)
+# print("16842749")
+# print("Code is " + convert4.bi)
+# convert4.findReg()
+# l = convert4.regC
+# print("[offsetFeild is ] " + l)
 
 # print("======================================================================================")
 # convert2 = ConB(8454151)
@@ -83,7 +81,6 @@ print("[offsetFeild is ] " + l)
 # print("[offsetFeild is ] " + convert2.offsetField)
 
 # print("======================================================================================")
-
 # convert3 = ConB(655361)
 # convert3.findReg()
 # print(" add     1         2         1")
@@ -92,8 +89,19 @@ print("[offsetFeild is ] " + l)
 # print("[Opcode is ] " + convert3.opcode)
 # print("[RegA is   ] " + convert3.regA)
 # print("[RegB is   ] " + convert3.regB)
-# print("[desReg is ] " + convert3.desReg)
+# print("[desReg is ] " + convert3.regC)
 # print("[Temp is   ] " + convert3.temp)
 # print("[offsetFeild is ] " + convert3.offsetField)
 
+# print("======================================================================================")
+# convert4 = ConB(16842749)
+# convert4.findReg()
+# print()
+
+""" convert1 = ConB(16842749)
+convert1.findReg()
+
+print("OPCODE IN DEC : " + convert1.opcode)
+print(convert1.regA + "  " + convert1.regB + "  " + convert1.regC )
+print("this is twocom " + convert1.twocom) """
 

@@ -1,9 +1,9 @@
-
 from Convert import ConB 
 from dataclasses import dataclass,field
 DEFMEMORY = []
 DEFREGS = [0] * 8
 TARGETFILE = "test.txt"
+
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
 class stateStruct:
@@ -25,16 +25,17 @@ state = stateStruct(0,DEFMEMORY,DEFREGS)
 for line in f:
     #print(line)
     state.mem.append(line)
-    print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
+    # print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
-    
 
 
 # add regA and regB and put vaule to rD
 def add(rs,rt,rD):
-    ans = rs + rt
-    state.reg[rD] = ans
-    return -1
+    ans = int(rs) + int(rt)
+    state.reg[rD] = int(ans)
+    #print("rs =",rs,"rt =",rt,"rD =",rD)
+    #print(ans)
+    return 'notjump'
 
 
 # need to get approved
@@ -64,16 +65,16 @@ def nand(rs,rt,rD):
     # ans --> base 10 converter then return
 
     state.reg[rD] = a
-    return -1
+    return 'notjump'
 
 
 
 def lw(rs,regB,rD): # get vaule from mem
-    sum = rs + rD #get vaule of regA + offes(rD) to locate mem 
+    sum = int(rs + rD) #get vaule of regA + offes(rD) to locate mem 
     ans = int(state.mem[sum]) # locate vaule of mem to variable
     state.reg[regB] = ans # store the target reg with mem
     #need to do something if we lw from stack
-    return -1
+    return 'notjump'
 
 
 
@@ -89,21 +90,21 @@ def sw(rs,rt,rD):
     else:
         print("Error")  #incase it store in the mem that we dont have stack pointer?
     #are we need to delete a vaule in stack ?
-    return -1
+    return 'notjump'
 
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
-        return  rD   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
+        return  int(rD)   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
     else:
-        return -1 #return -1 for inform that we not change pc
+        return 'notjump' #return -1 for inform that we not change pc
 
 def jalr(rs,rd):
     state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
-    return int(state.reg[rs]) # return jump address which is regA
+    return rs # return jump address which is regA
 def halt():
-    return -2
+    return 'halt'
 def noop():
-    return -3
+    return 'noop'
 
 
 
@@ -131,12 +132,11 @@ def compute(opcode,regA,regB,rD):
     elif(opcode == 4):  #BEQ
         rs = state.reg[regA] #accest regA in rs loc
         rt = state.reg[regB] #accest regB in rt loc
-        beq(rs,rt,rD)
         return beq(rs,rt,rD)
     elif(opcode == 5):  #JALR
         rs = state.reg[regA] #accest regA in rs loc
-        rd = state.reg[regB] #accest regB in rt loc
-        return jalr(rs,rd)
+        # rd = state.reg[regB] #accest regB in rt loc
+        return jalr(rs,regB)
     elif(opcode == 6):  #HALT
         return halt()
     else:   #NOOP
@@ -156,7 +156,7 @@ def compute(opcode,regA,regB,rD):
 
 # for i in range(0,len(state.mem)):
 #     print(state.mem[i])
-#############################################################################################################################
+# ############################################################################################################################
 # for i in range(state.pc,state.numMemory):
 #     print(i)
 #     print(state.mem)
