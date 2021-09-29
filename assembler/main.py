@@ -63,21 +63,7 @@ class AssemblyTranslator:
                 textTranslated += self.__regDecoder3bit(destReg)
 
             elif type == "I" :
-                if (self.__inst["name"][indexOfInst] == "lw"):
-                    textTranslated += "0000000"
-                    textTranslated += optc_bin
-                    textTranslated += self.__regDecoder3bit(regA)
-                    textTranslated += self.__regDecoder3bit(regB)
-
-                    sybolicAddress = ""
-                    isSymbolic = False 
-                    for i in range(len(self.__assembly)):
-                        if(self.__assembly[i][0] == destReg):
-                            sybolicAddress = str(i)
-                            isSymbolic = True
-                            break;
-                        isSymbolic = False
-                else:
+                if (self.__inst["name"][indexOfInst] == "beq"):
                     textTranslated += "0000000"
                     textTranslated += optc_bin
                     textTranslated += self.__regDecoder3bit(regA)
@@ -90,6 +76,20 @@ class AssemblyTranslator:
                     for i in range(len(self.__assembly)):
                         if(self.__assembly[i][0] == destReg):
                             sybolicAddress = str((indexOfItem+1-i)*-1)      #this eqation for calculate how many line should add(sub) in offsetField
+                            isSymbolic = True
+                            break;
+                        isSymbolic = False
+                else:
+                    textTranslated += "0000000"
+                    textTranslated += optc_bin
+                    textTranslated += self.__regDecoder3bit(regA)
+                    textTranslated += self.__regDecoder3bit(regB)
+
+                    sybolicAddress = ""
+                    isSymbolic = False 
+                    for i in range(len(self.__assembly)):
+                        if(self.__assembly[i][0] == destReg):
+                            sybolicAddress = str(i)
                             isSymbolic = True
                             break;
                         isSymbolic = False
@@ -179,7 +179,8 @@ class AssemblyTranslator:
         return resList
 
 
-    def stringReader(self,filelocation = "assembler\demofile.txt"):
+    def stringReader(self,filelocation = "assembler\demofile copy.txt"):
+    # def stringReader(self,filelocation = "assembler\demofile.txt"):
 
         f = open(filelocation, "r")
         f = f.read()
