@@ -7,11 +7,13 @@ class AssemblyTranslator:
     __fillValue = []                        #collect all .fill variables and make list of pair [symbolic,values]
     __assembly = []                         #save all instructions in assembly line by line
     __inst = Instruction
+    errorDetect = False
+    errorDetail = ""
 
     #*dummy functions 
 
     def printer(self, des = "textToSimulator.txt", inputList = __machineLang):          #TODO: write machine language to text file
-            file = open(des, "a")                                                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+            file = open(des, "w")                                                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
             for i in inputList:                                                         #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
                 file.write(str(i)+"\n")                                                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
             file.close()                                                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
@@ -49,7 +51,7 @@ class AssemblyTranslator:
         textTranslated = ""
 
         labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4] 
-        if instcode != ".fill" :
+        if (instcode in Instruction["name"]) :
             indexOfInst = self.__inst["name"].index(instcode)
             type = self.__inst["type"][indexOfInst]
             optc_bin = self.__inst["optc_bin"][indexOfInst]
@@ -73,7 +75,7 @@ class AssemblyTranslator:
                     isSymbolic = False 
 
                     indexOfItem = self.__assembly.index(item)
-                    for i in range(len(self.__assembly)):
+                    for i in range(len(self.__assembly)):                        
                         if(self.__assembly[i][0] == destReg):
                             sybolicAddress = str((indexOfItem+1-i)*-1)      #this eqation for calculate how many line should add(sub) in offsetField
                             isSymbolic = True
@@ -92,11 +94,13 @@ class AssemblyTranslator:
                             sybolicAddress = str(i)
                             isSymbolic = True
                             break;
-                        isSymbolic = False
 
 
                 if (isSymbolic) :
                     textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+
+                # elif(destReg):
+
                 else :
                     if (int(destReg) < 0) :
                         textTranslated += self.__twosCom_decBin(int(destReg))   
@@ -116,22 +120,35 @@ class AssemblyTranslator:
                 textTranslated += "0000000"                             #? Bit 24 - 22 opcode
                 textTranslated += optc_bin                                   
                 textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
-        else:                                                           #for ,fill
+
+            print(textTranslated)                                             #!for debugging purposes
+            print(self.__binToDec(textTranslated))                            #!for debugging purposes
+            self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
+
+        elif (instcode == ".fill"):                                                           #for ,fill
             isSymbolicAddress = False 
             for i in range(len(self.__assembly)):
                 if (regA == self.__assembly[i][0]):
                     textTranslated = bin(int(i))
                     isSymbolicAddress = True
                     break;
+        
+
             if (isSymbolicAddress == False):
                 textTranslated = bin(int(regA))
 
-        print(textTranslated)                                             #!for debugging purposes
-        print(self.__binToDec(textTranslated))                            #!for debugging purposes
-        self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
-        
+            print(textTranslated)                                             #!for debugging purposes
+            print(self.__binToDec(textTranslated))                            #!for debugging purposes
+            self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
 
-    def __regDecoder3bit(self, number):                  #TODO: decode reg from dec to bin like from '5' to '101'
+
+        else:
+            self.errorDetect = True
+            self.errorDetail = "Using opcode other than those specified" 
+            
+
+
+    def __regDecoder3bit(self, number):                     #TODO: decode reg from dec to bin like from '5' to '101'
         number = int(number)     
         if( number >= 0 and number < 8 ): 
             if(number==0):
@@ -172,15 +189,17 @@ class AssemblyTranslator:
                 labels, instcode, regA, regB, destReg = item[0], item[1], item[2], None, None
 
             else:
-                labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4]     #otherwise 
-
+                errorDetect = True
+                errorDetail = "Using opcode other than those specified"
+                labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4]
+            
             sheet = [labels, instcode, regA, regB, destReg]     #contains data in instruction list format
             resList.append(sheet)
         return resList
 
 
-    def stringReader(self,filelocation = "assembler\demofile copy.txt"):
-    # def stringReader(self,filelocation = "assembler\demofile.txt"):
+    # def stringReader(self,filelocation = "assembler\demofile copy.txt"):
+    def stringReader(self,filelocation = "assembler\demofile.txt"):
 
         f = open(filelocation, "r")
         f = f.read()
@@ -198,10 +217,23 @@ class AssemblyTranslator:
 
         # self.translator([None, 'sw', '7', '1', 'stack'])
         for element in instList:
-            print(element)
-            self.translator(element)                    #!for debugging purposes
-        print("")
-        print(*self.__machineLang,sep='\n')             #!for debugging purposes
+            if(self.errorDetect == False):
+                print(element)
+                self.translator(element)                #!for debugging purposes
+
+            else:
+                print("") 
+                print("exist(1)") 
+                print(self.errorDetail)
+                print("") 
+                break;
+
+        if(self.errorDetect == False):
+                print("")                
+                print(*self.__machineLang,sep='\n')         #!for debugging purposes
+                print("") 
+                print("exist(0)") 
+                print("") 
 
 
 
