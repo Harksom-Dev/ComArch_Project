@@ -100,7 +100,7 @@ def beq(rs,rt,rD):
 
 def jalr(rs,rd):
     state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
-    return int(state.reg[rs]) # return jump address which is regA
+    return rs # return jump address which is regA
 def halt():
     return 'halt'
 def noop():
@@ -135,8 +135,8 @@ def compute(opcode,regA,regB,rD):
         return beq(rs,rt,rD)
     elif(opcode == 5):  #JALR
         rs = state.reg[regA] #accest regA in rs loc
-        rd = state.reg[regB] #accest regB in rt loc
-        return jalr(rs,rd)
+        # rd = state.reg[regB] #accest regB in rt loc
+        return jalr(rs,regB)
     elif(opcode == 6):  #HALT
         return halt()
     else:   #NOOP
