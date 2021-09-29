@@ -31,7 +31,6 @@ combi   lw		0	6	neg1	x6 = -1
 		
 
 	
-	
 L1      lw  	3   3   pos1    x3 += 1
 		lw		0	4	comAdr	x4 = combi
 		jalr	4	7
