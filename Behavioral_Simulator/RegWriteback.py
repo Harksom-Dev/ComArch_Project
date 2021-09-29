@@ -45,6 +45,8 @@ def Simulate():
             #print(printStruct(state.pc))
             state.pc += 1
             #instructionCount+=1
+        elif(test == 'jalr'):
+            state.pc += 0
         else:   #if compute return Jump Address
             state.pc +=  test +1
             #print(printStruct(state.pc))
