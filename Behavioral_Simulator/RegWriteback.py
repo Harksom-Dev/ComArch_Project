@@ -4,7 +4,7 @@ from Main import *
 
 textList = []
 def printer(des = "ExSimulator.txt", inputList = textList):  #TODO: write machine language to text file
-            file = open(des, "a")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+            file = open(des, "w")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
             for i in inputList:                         #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
                 file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
             file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
@@ -51,11 +51,7 @@ def Simulate():
             #instructionCount+=1
     
 
-    #print after instruction done
-    # print (*textList, sep="\n") 
-    # print(textList) 
     textList.append(printStruct(state.pc))
-    printer("ExSimulator.txt",textList)
-    
  
 Simulate()
+printer("ExSimulator.txt",textList)         #Write file from textList(Simulater list) to ExSimulator.txt file
