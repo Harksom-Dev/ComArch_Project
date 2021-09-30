@@ -1,4 +1,4 @@
-	    lw		0	6	pos1	x6 = 1
+        lw		0	6	pos1	x6 = 1
 	    lw		0	1	n	    x1 = input[n]
 	    lw		0	2	r	    x2 = intput[r]
 		sw		5	1	stack	save n to stack
@@ -13,8 +13,8 @@ combi   lw		0	6	neg1	x6 = -1
 		lw		5	2	stack	load new r vaule from stack
 		add		5	6	5		decrement stack pointer	
 	    lw		5	1	stack	load new n vaule from stack
-	    beq		2	0	L1Adr	if r == 0 jump to L1
-	    beq		1	2	L1Adr	if n == r jump to L1
+	    beq		2	0	L1	    if r == 0 jump to L1
+	    beq		1	2	L1	    if n == r jump to L1
 		lw		0	6	pos1	x6 = 1
 		lw		0	4	neg1	x4 = -1
 		add		1	4	4		x4 = n -1
@@ -35,8 +35,9 @@ combi   lw		0	6	neg1	x6 = -1
 L1      lw  	0  	6   pos1    x6 = 1
 		add		3	6	3		x3 +=1
 		lw		0	4	comAdr	x4 = combi
-		beq		5	0	7		if stack pointer = 0(end of recursive) jump to halt
+		beq		5	0	1		if stack pointer = 0(end of recursive) jump to jalr below to halt(can improve)
 		jalr	4	6			if stack is not = 0	 save pc+1 to x6 but we dont care about x6
+        jalr    7   6
 comAdr	.fill	combi
 pos1	.fill	1
 neg1	.fill	-1
