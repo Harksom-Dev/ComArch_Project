@@ -94,13 +94,14 @@ def sw(rs,rt,rD):
 
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
-        return  int(rD)   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
+        return  int(rD) +1   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
     else:
         return 'notjump' #return -1 for inform that we not change pc
 
 def jalr(rs,rd):
-    state.reg[rd] = state.pc # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
-    return rs # return jump address which is regA
+    state.reg[rd] = state.pc+1 # store pc + 1 in regB dont need to +1 because we always +1 at the end of for
+    state.pc = rs
+    return 'jalr' # return jump address which is regA
 def halt():
     return 'halt'
 def noop():
