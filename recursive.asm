@@ -36,7 +36,6 @@ L1      lw  	0  	6   pos1    x6 = 1
 		add		3	6	3		x3 +=1
 		lw		0	4	comAdr	x4 = combi
 		beq		5	0	7		if stack pointer = 0(end of recursive) jump to halt
-		lw
 		jalr	4	6			if stack is not = 0	 save pc+1 to x6 but we dont care about x6
 combi	.fill	comAdr
 pos1	.fill	1
