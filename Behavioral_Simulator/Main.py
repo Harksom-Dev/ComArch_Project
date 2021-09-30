@@ -2,7 +2,7 @@ from Convert import ConB
 from dataclasses import dataclass,field
 DEFMEMORY = []
 DEFREGS = [0] * 8
-TARGETFILE = "test.txt"
+TARGETFILE = "Behavioral_Simulator/test.txt"
 
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
