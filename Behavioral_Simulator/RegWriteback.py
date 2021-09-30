@@ -2,11 +2,11 @@ from os import stat
 from Convert import ConB
 from Main import *
 
-def printer(self, des = "ExSimulator.txt"):     #TODO: write machine language to text file
-            file = open(des, "a")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
-            for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
-                file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
-            file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
+# def printer(self, des = "ExSimulator.txt"):     #TODO: write machine language to text file
+#             file = open(des, "a")                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
+#             for i in self.__machineLang:                #TODO: "a" - Append - Opens a file for appending, creates the file if it does not exist
+#                 file.write(str(i)+"\n")                 #TODO: "x" - Create - Creates the specified file, returns an error if the file exists
+#             file.close()                                #TODO: "w" - Write - Opens a file for writing, creates the file if it does not exist
 
 def printStruct(x): #use for print in each step
         print('@@@\nstate:')
