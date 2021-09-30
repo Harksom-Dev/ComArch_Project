@@ -16,13 +16,16 @@ combi   lw		0	6	neg1	x6 = -1
 	    beq		2	0	L1Adr	if r == 0 jump to L1
 	    beq		1	2	L1Adr	if n == r jump to L1
 		lw		0	6	pos1	x6 = 1
-		lw		1	4	neg1	x4 = n-1
+		lw		0	4	neg1	x4 = -1
+		add		1	4	4		x4 = n -1
 		sw		5	4	stack	save n-1 to stack
 		add		5	6	5	    increment stack pointer
-		lw		2	4	neg1	x4 = r-1
+		lw		0	4	neg1	x4 = -1
+		add		2	4	4		x4 = r -1
 		sw		5	4	stack	save r-1 to stack
 		add		5	6	5	    increment stack pointer
-		lw		1	4	neg1	x4 = n-1
+		lw		0	4	neg1	x4 = -1
+		add		1	4	4		x4 = n - 1
 		sw		5	4	stack	save n-1 to stack
 		add		5	6	5	    increment stack pointer
 		sw		5	2	stack	save r to stack
