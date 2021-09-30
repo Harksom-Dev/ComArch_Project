@@ -6,13 +6,13 @@
 		sw		5	2	stack 	save r to stack
 		add		5	6	5	    increment stack pointer
 	    lw		0	4	comAdr	x4 = combi
-	    jalr	4	7	    call combi x7 = returnaddress
-	    halt	
+	    jalr	4	7	    	call combi ,x7 = returnaddress
+	    halt			
 combi   lw		0	6	neg1	x6 = -1
+		add		5	6	5		decrement stack pointer	
 		lw		5	2	stack	load new r vaule from stack
 		add		5	6	5		decrement stack pointer	
 	    lw		5	1	stack	load new n vaule from stack
-		add		5	6	5		decrement stack pointer	
 	    beq		2	0	L1Adr	if r == 0 jump to L1
 	    beq		1	2	L1Adr	if n == r jump to L1
 		lw		0	6	pos1	x6 = 1
@@ -27,21 +27,18 @@ combi   lw		0	6	neg1	x6 = -1
 		add		5	6	5	    increment stack pointer
 		sw		5	2	stack	save r to stack
 		add		5	6	5	    increment stack pointer
-		beq		5	6	stopAdr	if stack poiner == 0 it's mean program need to stop(since this version stack->0 is poiter to address)
-		
-
-	
-L1      lw  	3   3   pos1    x3 += 1
 		lw		0	4	comAdr	x4 = combi
-		jalr	4	7
-		
-stop	halt
-	
-stop	.fill	stopAdr
+		jalr	4	6			jump to combi to perfrom recursive and we dont care about x6		
+L1      lw  	0  	6   pos1    x6 = 1
+		add		3	6	3		x3 +=1
+		lw		0	4	comAdr	x4 = combi
+		beq		5	0	7		if stack pointer = 0(end of recursive) jump to halt
+		lw
+		jalr	4	6			if stack is not = 0	 save pc+1 to x6 but we dont care about x6
 combi	.fill	comAdr
 pos1	.fill	1
 neg1	.fill	-1
-L1	    .fill	L1Adr
+L1Adr	.fill	L1
 n	    .fill	4       input
 r	    .fill	2       input
 stack	.fill	0
