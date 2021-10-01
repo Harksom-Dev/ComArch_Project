@@ -9,10 +9,11 @@ mul     nand    3   4   6           x6 = mplier nand temp
         add     4   4   4           temp += temp for check next bit in mplier
         lw      0   5   limit       x5 = limit num
         lw      0   7   mul         x7 = mul address
-        beq     4   6   1           if temp = limit it's mean it's out of 15 bit stop now
+        beq     4   5   1           if temp = limit it's mean it's out of 15 bit stop now
         jalr    7   5               if not jump to do mul again (we dont care about x5)
         halt
-mcand   .fill   33 
-mplier  .fill   44
+mulAdr  .fill   mul
+mcand   .fill   4 
+mplier  .fill   3
 pos1    .fill   1
 limit   .fill   32768   limit of 15 bit num
