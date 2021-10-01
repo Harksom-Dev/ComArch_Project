@@ -1,11 +1,13 @@
 from instructions import inst as Instruction
 
 
+
 class AssemblyTranslator:
 
     __machineLang = []                      #all instructions in assembly that translated to machine language   
     __fillValue = []                        #collect all .fill variables and make list of pair [symbolic,values]
     __assembly = []                         #save all instructions in assembly line by line
+    __LabelList = 0
     __inst = Instruction
     errorDetect = False
     errorDetail = ""
@@ -27,6 +29,26 @@ class AssemblyTranslator:
         else:
             bin1 = -1*dec
             return bin(bin1 - pow(2,bit) ).split("0b")[1]
+
+    def checkSameLable(self,List=__LabelList):                   
+        count = 0
+        for i in range (0,len(List)) :
+            firstLabel = List[i]
+            count += 1
+            for j in range (count,len(List)):
+                if(firstLabel == List[j] and self.errorDetect != True):
+                    self.errorDetect = True
+                    self.errorDetail = "Same Lable"
+                    
+        
+   
+    def addLabelinList(self,List=__assembly):
+        newList = []
+        for i in range(len(List)):
+            if(List[i][0] !=None):
+              newList.append(List[i][0])
+
+        return newList
 
 
     
@@ -67,6 +89,7 @@ class AssemblyTranslator:
                 textTranslated += self.__regDecoder3bit(destReg)
 
             elif type == "I" :
+
                 if (self.__inst["name"][indexOfInst] == "beq"):
                     textTranslated += "0000000"
                     textTranslated += optc_bin
@@ -97,20 +120,24 @@ class AssemblyTranslator:
                             isSymbolic = True
                             break;
                 
-
-                if (isSymbolic) :
-                    textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+                # print(sybolicAddress)
+                # print("--------------------------------------------------------")
+                if(int(sybolicAddress)>=-32768 and int(sybolicAddress <= 32767)):
+                    if (isSymbolic) :
+                        textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
                 
-                elif(not destReg.isdigit()):
-                    self.errorDetect = True
-                    self.errorDetail = "Using undefined labels"
+                    elif(not destReg.isdigit()):
+                        self.errorDetect = True
+                        self.errorDetail = "Using undefined labels"
 
-                else :
-                    if (int(destReg) < 0) :
-                        textTranslated += self.__twosCom_decBin(int(destReg))   
                     else :
-                        textTranslated += '{0:016b}'.format(int(destReg))
-
+                      if (int(destReg) < 0) :
+                         textTranslated += self.__twosCom_decBin(int(destReg))   
+                      else :
+                            textTranslated += '{0:016b}'.format(int(destReg))
+                else:
+                    self.errorDetect = True
+                    self.errorDetail ="Out of range destReg more 16 bit"
 
             elif type == "J" :
                 textTranslated += "0000000"
@@ -172,7 +199,6 @@ class AssemblyTranslator:
     def __simplify(self,listTransformed):           #TODO: this function should delete all comments and formating
 
         resList = []
-
         for item in listTransformed:
             if (item[0] in Instruction["name"]):    #ckeck instions of this line have the same name as the instruction in the instruction list
                 if (item[0]  == "halt"):            #and spacial case for "halt" it can be in both item[0] and item[1] 
@@ -191,7 +217,7 @@ class AssemblyTranslator:
                     labels, instcode, regA, regB, destReg = None, item[0], item[1], item[2], item[3]        #if have the same name as the instruction in the instruction list
             elif (item[1] == ".fill") :
                 labels, instcode, regA, regB, destReg = item[0], item[1], item[2], None, None
-
+                
             else:
                 errorDetect = True
                 errorDetail = "Using opcode other than those specified"
@@ -199,6 +225,10 @@ class AssemblyTranslator:
             
             sheet = [labels, instcode, regA, regB, destReg]     #contains data in instruction list format
             resList.append(sheet)
+          
+        self.__LabelList= self.addLabelinList(resList)
+        self.checkSameLable(self.__LabelList)                                   #! checkSameLable
+        # print(self.__LabelList)
         return resList
 
 
@@ -238,6 +268,8 @@ class AssemblyTranslator:
                 print("") 
                 print("exist(0)") 
                 print("") 
+        
+        
 
 
 
@@ -249,5 +281,5 @@ if __name__ == "__main__":
     asbt.stringReader()
 
     asbt.printer()
-
+    
     #then read instList and decode them as binary string
