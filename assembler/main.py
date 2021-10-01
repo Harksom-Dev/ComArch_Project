@@ -40,14 +40,13 @@ class AssemblyTranslator:
                     self.errorDetect = True
                     self.errorDetail = "Same Lable"
                     
-        
-   
+
     def addLabelinList(self,List=__assembly):
         newList = []
         for i in range(len(List)):
             if(List[i][0] !=None):
-              newList.append(List[i][0])
-
+                newList.append(List[i][0])
+        
         return newList
 
 
@@ -120,9 +119,9 @@ class AssemblyTranslator:
                             isSymbolic = True
                             break;
                 
-              
+
                 if (isSymbolic) :
-                  textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+                    textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
                 
                 elif(not destReg.isdigit()):
                     self.errorDetect = True
@@ -135,8 +134,8 @@ class AssemblyTranslator:
                         else :
                             textTranslated += '{0:016b}'.format(int(destReg))
                     else:
-                     self.errorDetect = True
-                     self.errorDetail ="Out of range destReg more 16 bit"
+                        self.errorDetect = True
+                        self.errorDetail ="Out of range destReg more 16 bit"
                 
 
             elif type == "J" :
@@ -227,7 +226,7 @@ class AssemblyTranslator:
             
             sheet = [labels, instcode, regA, regB, destReg]     #contains data in instruction list format
             resList.append(sheet)
-          
+
         self.__LabelList= self.addLabelinList(resList)
         self.checkSameLable(self.__LabelList)                                   #! checkSameLable
         # print(self.__LabelList)
