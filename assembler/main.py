@@ -120,24 +120,24 @@ class AssemblyTranslator:
                             isSymbolic = True
                             break;
                 
-                # print(sybolicAddress)
-                # print("--------------------------------------------------------")
-                if(int(sybolicAddress)>=-32768 and int(sybolicAddress <= 32767)):
-                    if (isSymbolic) :
-                        textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
+              
+                if (isSymbolic) :
+                  textTranslated += self.__twosCom_decBin(int(sybolicAddress),16)
                 
-                    elif(not destReg.isdigit()):
-                        self.errorDetect = True
-                        self.errorDetail = "Using undefined labels"
-
-                    else :
-                      if (int(destReg) < 0) :
-                         textTranslated += self.__twosCom_decBin(int(destReg))   
-                      else :
-                            textTranslated += '{0:016b}'.format(int(destReg))
-                else:
+                elif(not destReg.isdigit()):
                     self.errorDetect = True
-                    self.errorDetail ="Out of range destReg more 16 bit"
+                    self.errorDetail = "Using undefined labels"
+
+                else :
+                    if(int(destReg)>=-32768 and int(destReg) <= 32767):
+                        if (int(destReg) < 0) :
+                            textTranslated += self.__twosCom_decBin(int(destReg))   
+                        else :
+                            textTranslated += '{0:016b}'.format(int(destReg))
+                    else:
+                     self.errorDetect = True
+                     self.errorDetail ="Out of range destReg more 16 bit"
+                
 
             elif type == "J" :
                 textTranslated += "0000000"
@@ -193,7 +193,9 @@ class AssemblyTranslator:
         # elif number < 0 and number > -7:
         #    return bin(number if number>0 else number+(1<<3)).replace("0b", "")
         else: 
-            return print("Invalid")   
+            self.errorDetect = True
+            self.errorDetail = "out of range 3 bit"
+            return""
 
 
     def __simplify(self,listTransformed):           #TODO: this function should delete all comments and formating
