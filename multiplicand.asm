@@ -3,4 +3,5 @@
 ;x2 = mcand
 ;x3 = mplier
 
-mcand 
+mcand .fill 33 
+mplier .fill 44
