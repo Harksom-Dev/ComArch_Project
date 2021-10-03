@@ -70,7 +70,6 @@ class AssemblyTranslator:
     def translator(self,item):              #TODO: make this function that
 
         textTranslated = ""
-        isInFillValue = False 
         isSymbolic = False 
 
         labels, instcode, regA, regB, destReg = item[0], item[1], item[2], item[3], item[4] 
@@ -151,9 +150,9 @@ class AssemblyTranslator:
                 textTranslated += optc_bin                                   
                 textTranslated += "0000000000000000000000"              #? Bit 21 - 0 should be zero "0"*22
 
-            print(textTranslated)                                             #!for debugging purposes
-            print(self.__binToDec(textTranslated))                            #!for debugging purposes
-            self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
+            # print(textTranslated)                                             #!for debugging purposes
+            # print(self.__binToDec(textTranslated))                            #!for debugging purposes
+            self.__machineLang.append(self.__binToDec(textTranslated))       
 
         elif (instcode == ".fill"):                                                           #for ,fill
             isSymbolicAddress = False 
@@ -167,9 +166,9 @@ class AssemblyTranslator:
             if (isSymbolicAddress == False):
                 textTranslated = bin(int(regA))
 
-            print(textTranslated)                                             #!for debugging purposes
-            print(self.__binToDec(textTranslated))                            #!for debugging purposes
-            self.__machineLang.append(self.__binToDec(textTranslated))        #!for debugging purposes
+            # print(textTranslated)                                             #!for debugging purposes
+            # print(self.__binToDec(textTranslated))                            #!for debugging purposes
+            self.__machineLang.append(self.__binToDec(textTranslated))       
 
 
         else:
@@ -245,16 +244,16 @@ class AssemblyTranslator:
 
         instList = self.__simplify(splited)             #contains all assembly code in instruction list format like [labels, instcode, regA, regB, destReg]
         self.__assembly= instList
-        print(*instList,sep='\n')                       #!for debugging purposes
+        # print(*instList,sep='\n')                       #!for debugging purposes
         
-        self.__fillFinding()                            #!for debugging purposes
-        print(self.__fillValue)                         #!for debugging purposes
+        self.__fillFinding()                           
+        # print(self.__fillValue)                         #!for debugging purposes
 
         # self.translator([None, 'sw', '7', '1', 'stack'])
         for element in instList:
             if(self.errorDetect == False):
-                print(element)
-                self.translator(element)                #!for debugging purposes
+                # print(element)                        #!for debugging purposes
+                self.translator(element)                
 
             else:
                 print("") 
@@ -265,12 +264,11 @@ class AssemblyTranslator:
 
         if(self.errorDetect == False):
                 print("")                
-                print(*self.__machineLang,sep='\n')         #!for debugging purposes
+                # print(*self.__machineLang,sep='\n')         #!for debugging purposes
                 print("") 
                 print("exist(0)") 
                 print("") 
-        
-        
+
 
 
 
