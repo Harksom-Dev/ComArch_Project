@@ -1,3 +1,4 @@
+from os import stat
 from Convert import ConB 
 from dataclasses import dataclass,field
 DEFMEMORY = []
@@ -103,7 +104,7 @@ def sw(rs,rt,rD):
 
 def beq(rs,rt,rD):
     if(rs == rt): # check the conditon of beq
-        return  int(rD) + 1   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
+        return  int(rD)   # return 1+ offsetfield to change pc now we not +1 on rD becuz pc in for gonna + 1 for it's self when finish loop
     else:
         return 'notjump' #return -1 for inform that we not change pc
 
