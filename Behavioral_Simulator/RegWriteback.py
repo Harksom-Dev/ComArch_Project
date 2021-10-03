@@ -19,7 +19,8 @@ def printStruct(x): #use for print in each step
     for i in range(len(DEFREGS)):   #print each registers in that step
         textList.append('\t\t\treg[ {} ] {}'.format(i,state.reg[i]))
     textList.append('end state\n')
-    return ''
+    print(textList)
+    return textList
 
 def Simulate():
     SimulateEX = []
@@ -32,25 +33,24 @@ def Simulate():
         test = compute(int(a.opcode),int(a.regA),int(a.regB),int(a.regC))
         instructionCount+=1
         if(test == 'noop'): #if compute return noop
-            #print(printStruct(state.pc))    
             state.pc+=1
-            #instructionCount+=1
+            instructionCount+=1
         elif(test == 'halt'):   #if compute return halt
             textList.append('machine halted \n total of {} instructions executed\n final state of machine:\n'.format(instructionCount))
             #print(printStruct(state.pc))
             state.pc += 1
-            #instructionCount+=1
+            instructionCount+=1
             break
         elif(test == 'notjump'):    #if compute return notjump
             #print(printStruct(state.pc))
             state.pc += 1
-            #instructionCount+=1
+            instructionCount+=1
         elif(test == 'jalr'):
             state.pc += 0
         else:   #if compute return Jump Address
             state.pc +=  test +1
             #print(printStruct(state.pc))
-            #instructionCount+=1
+            instructionCount+=1
     
 
     textList.append(printStruct(state.pc))
