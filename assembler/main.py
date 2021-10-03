@@ -30,18 +30,18 @@ class AssemblyTranslator:
             bin1 = -1*dec
             return bin(bin1 - pow(2,bit) ).split("0b")[1]
 
-    def checkSameLable(self,List=__LabelList):                   
+    def checkSameLable(self,List=__LabelList):                     #? check The same Lable in List
         count = 0
         for i in range (0,len(List)) :
             firstLabel = List[i]
             count += 1
             for j in range (count,len(List)):
-                if(firstLabel == List[j] and self.errorDetect != True):
+                if(firstLabel == List[j] and self.errorDetect != True):           
                     self.errorDetect = True
                     self.errorDetail = "Same Lable"
                     
 
-    def addLabelinList(self,List=__assembly):
+    def addLabelinList(self,List=__assembly):                      #? Add labels to list 
         newList = []
         for i in range(len(List)):
             if(List[i][0] !=None):
