@@ -12,7 +12,7 @@ class AssemblyTranslator:
     errorDetect = False
     errorDetail = ""
 
-    #*dummy functions 
+#*used functions
 
     def printer(self, des = "textToSimulator.txt", inputList = __machineLang):          #TODO: write machine language to text file
             file = open(des, "w")                                                       #TODO: "r" - Read - Default value. Opens a file for reading, error if the file does not exist
@@ -48,10 +48,6 @@ class AssemblyTranslator:
                 newList.append(List[i][0])
         
         return newList
-
-
-    
-    #*used functions
 
     def __fillFinding(self):                #TODO: this function should be call first and find .fill in assembly file and return line where .fill is                        
         for i in self.__assembly:           #TODO: and then collect all .fill variables and make list of pair [symbolic,values]
