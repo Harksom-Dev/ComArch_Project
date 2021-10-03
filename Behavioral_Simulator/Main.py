@@ -52,10 +52,6 @@ def nand(rs,rt,rD):
         length = len(rt)
         rs = format(rs,'0'+ str(length)+'b')   #convert back from base 10 to base 2
     #need to fix length to the same rs and rt
-    # print("rs= ",rs)   
-    # print("rt=",rt)
-    # rsl = []
-    # rtl = []
     a = 0
     ans = ""
     for i in range(length): # loop throught the end of vaule in rs and rt and do a NAND operation
@@ -67,23 +63,17 @@ def nand(rs,rt,rD):
             ans += '1'
             a += 2**(length-1-i) # compute and answer to be base 10 vaule
     
-    # print("string =",ans)
-    # print(a)
-    # ans = int(ans)
-    # print("int =",ans)
-    # ans --> base 10 converter then return
 
     state.reg[rD] = a
     return 'notjump'
 
+# nand(9,8,0)
 
 
-
-def lw(rs,regB,rD): # get vaule from mem
-    sum = int(rs + rD) #get vaule of regA + offes(rD) to locate mem 
-    ans = int(state.mem[sum]) # locate vaule of mem to variable
-    state.reg[regB] = ans # store the target reg with mem
-    #need to do something if we lw from stack
+def lw(rs,regB,rD):                     # get vaule from mem
+    sum = int(rs + rD)                  #get vaule of regA + offes(rD) to locate mem 
+    ans = int(state.mem[sum])           # locate vaule of mem to variable
+    state.reg[regB] = ans               # store the target reg with mem
     return 'notjump'
 
 
