@@ -25,7 +25,6 @@ state = stateStruct(0,DEFMEMORY,DEFREGS)
 for line in f:
     #print(line)
     state.mem.append(line)
-    # print("memory[",state.numMemory,"] =",state.mem[state.numMemory])
     state.numMemory += 1
 
 
@@ -33,8 +32,6 @@ for line in f:
 def add(rs,rt,rD):
     ans = int(rs) + int(rt)
     state.reg[rD] = int(ans)
-    #print("rs =",rs,"rt =",rt,"rD =",rD)
-    #print(ans)
     return 'notjump'
 
 
@@ -51,10 +48,7 @@ def nand(rs,rt,rD):
         length = len(rt)
         rs = format(rs,'0'+ str(length)+'b')   #convert back from base 10 to base 2
     #need to fix length to the same rs and rt
-    # print("rs= ",rs)   
-    # print("rt=",rt)
-    # rsl = []
-    # rtl = []
+
     a = 0
     ans = ""
     for i in range(length): # loop throught the end of vaule in rs and rt and do a NAND operation
@@ -66,11 +60,6 @@ def nand(rs,rt,rD):
             ans += '1'
             a += 2**(length-1-i) # compute and answer to be base 10 vaule
     
-    # print("string =",ans)
-    # print(a)
-    # ans = int(ans)
-    # print("int =",ans)
-    # ans --> base 10 converter then return
 
     state.reg[rD] = a
     return 'notjump'
@@ -82,7 +71,7 @@ def lw(rs,regB,rD): # get vaule from mem
     sum = int(rs + rD) #get vaule of regA + offes(rD) to locate mem 
     ans = int(state.mem[sum]) # locate vaule of mem to variable
     state.reg[regB] = ans # store the target reg with mem
-    #need to do something if we lw from stack
+
     return 'notjump'
 
 
@@ -98,7 +87,6 @@ def sw(rs,rt,rD):
         state.mem.append(rt)    
     else:
         print("Error")  #incase it store in the mem that we dont have stack pointer?
-    #are we need to delete a vaule in stack ?
     return 'notjump'
 
 def beq(rs,rt,rD):
@@ -118,11 +106,7 @@ def noop():
 
 
 
-#maybe starting translate to 2 bit
-#compute  it's may return only where to jump the rest will do in sub function
-# return -1 mean not jump
-# return -2 for halt ?
-# return -3 for noop ?
+#compute func return int only jump loc
 def compute(opcode,regA,regB,rD):
     if(opcode == 0):    #ADD
         rs = state.reg[regA] #accest regA in rs loc
@@ -151,34 +135,5 @@ def compute(opcode,regA,regB,rD):
         return halt()
     else:   #NOOP
         return noop()
-
-# opt = 1
-# Ra = 4
-# Rb = 3
-# Rd = 3
-# print("opt=",opt,"regA=",Ra,"regB=",Rb,"rD=",Rd)
-# compute(opt,Ra,Rb,Rd)
-#compute(3,0,1,10)
-#print(state.reg[Rb])
-# i = 0
-# for i in range(0,7):
-#     print(state.reg[i])
-
-# for i in range(0,len(state.mem)):
-#     print(state.mem[i])
-# ############################################################################################################################
-# for i in range(state.pc,state.numMemory):
-#     print(i)
-#     print(state.mem)
-#     print(state.reg)
-
-
-# a = ConB(int(state.mem[4]))
-# a.findReg()
-# print((a.opcode))
-# print(a.regA)
-# print(a.regB)
-# print(a.offsetField)
-#when we write c
 
 f.close()
