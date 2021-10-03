@@ -67,7 +67,7 @@ class AssemblyTranslator:
             return print('Type of binary not string')
 
 
-    def translator(self,item):              #TODO: make this function that
+    def translator(self,item):              #TODO: make this function that input item looks like ['start', 'add', '1', '2', '1'] and translate to binary
 
         textTranslated = ""
         isSymbolic = False 
