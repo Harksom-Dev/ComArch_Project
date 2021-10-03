@@ -1,9 +1,9 @@
 from twosComplement import twosComplement as tc
 
 class ConB():
-    def __init__(self, decnum):
+    def __init__(self, decnum):  #collect decimal number
         self.decnum = decnum
-        self.bi = format(decnum, '025b')
+        self.bi = format(decnum, '025b') #convert Deci tp binary
         self.opcode = ""
         self.regA = ""
         self.regB = ""
