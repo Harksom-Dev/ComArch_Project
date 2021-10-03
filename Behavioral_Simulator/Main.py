@@ -2,7 +2,7 @@ from Convert import ConB
 from dataclasses import dataclass,field
 DEFMEMORY = []
 DEFREGS = [0] * 8
-TARGETFILE = "test.txt"
+TARGETFILE = "Behavioral_Simulator/test.txt"
 
 #create dataclass(similar to struct in c) for store all of machine code
 @dataclass
@@ -41,22 +41,30 @@ def add(rs,rt,rD):
 # need to get approved
 def nand(rs,rt,rD):
     # nand on bit only cant do on 10-base 
-    rs = format(rs,'03b')   #convert back from base 10 to base 2
-    rt = format(rt,'03b')   #convert back from base 10 to base 2
+    if(rs > rt):
+        rs = format(rs,'0b')   #convert back from base 10 to base 2
+        length = len(rs)
+        rt = format(rt,'0'+ str(length)+'b')   #convert back from base 10 to base 2
+        
+    else: 
+        rt = format(rt,'0b')   #convert back from base 10 to base 2
+        length = len(rt)
+        rs = format(rs,'0'+ str(length)+'b')   #convert back from base 10 to base 2
+    #need to fix length to the same rs and rt
     # print("rs= ",rs)   
     # print("rt=",rt)
     # rsl = []
     # rtl = []
     a = 0
     ans = ""
-    for i in range(0,3): # loop throught the end of vaule in rs and rt and do a NAND operation
+    for i in range(length): # loop throught the end of vaule in rs and rt and do a NAND operation
         # rsl.append(rs[i])
         # rtl.append(rt[i])
         if(rs[i] == '1' and  rt[i] == '1'):
             ans += '0'
         else:
             ans += '1'
-            a += 2**(2-i) # compute and answer to be base 10 vaule
+            a += 2**(length-1-i) # compute and answer to be base 10 vaule
     
     # print("string =",ans)
     # print(a)
@@ -66,6 +74,7 @@ def nand(rs,rt,rD):
 
     state.reg[rD] = a
     return 'notjump'
+
 
 
 
