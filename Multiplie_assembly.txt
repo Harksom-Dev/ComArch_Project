@@ -1,0 +1,17 @@
+            lw          0           2         mcand           load registor 2 with mcand value (x2 = mcand)
+            lw          0           3         mplier          load registor 3 with mplier value (x3 = mplier)
+            lw          0           4         pos1            load registor 4 with pos1 value (x4 = pos1)
+multiply    nand        3           4         6               x6 = x3 nand x4
+            nand        6           6         6               x6 = x6 nand x6
+            beq         6           0         1               if(x6 = 0) will skip next line
+            add         1           2         1               x1 = mcand + x1
+            add         2           2         2               shifleft x3 for 1 bit
+            add         4           4         4               temp use for compare with checklimit
+            lw          0           5         checklimit      load registor 5 with checklimit value (x5 = checklimit)
+            beq         4           5         1               if(x4 = x5) will skip next line
+            jalr        multiply    7                         jump to multiply, x7 just use for this instruction not relate this program 
+done        halt                                              end of program
+mcand       .fill      73
+mplier      .fill      55
+pos1        .fill      1
+checklimit  .fill      32768                                  value to check end of last bit
